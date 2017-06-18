@@ -104,7 +104,7 @@ class RecvThread(threading.Thread):
                 if self.running:
                     self.core.reconnect()
             except ValueError:
-                print "Invalid message: %s"%(result)
+                print "Invalid message: %s"%(message)
             
             
 class EventManager:
