@@ -17,12 +17,17 @@ password = "secret"
 ws = obsws(host, port, password)
 ws.connect()
 
-scenes = ws.send({"request-type": "GetSceneList"})
-for s in scenes['scenes']:
-    name = s['name']
-    print "Switching to %s"%(name)
-    ws.send({"request-type": "SetCurrentScene", "scene-name": name})
-    time.sleep(2)
+try:
+    scenes = ws.send({"request-type": "GetSceneList"})
+    for s in scenes['scenes']:
+        name = s['name']
+        print "Switching to %s"%(name)
+        ws.send({"request-type": "SetCurrentScene", "scene-name": name})
+        time.sleep(2)
 
-print "End of list"
+    print "End of list"
+    
+except KeyboardInterrupt:
+    pass
+    
 ws.disconnect()

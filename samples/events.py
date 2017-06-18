@@ -21,8 +21,12 @@ ws = obsws(host, port, password)
 ws.register(on_event)
 ws.connect()
 
-print "OK"
-time.sleep(10)
-print "END"
+try:
+    print "OK"
+    time.sleep(10)
+    print "END"
+
+except KeyboardInterrupt:
+    pass
 
 ws.disconnect()
