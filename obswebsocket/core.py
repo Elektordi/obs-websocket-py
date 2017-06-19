@@ -14,6 +14,8 @@ import logging
 LOG = logging.getLogger(__name__)
 
 from . import exceptions
+from . import base_classes
+from . import events
 
 class Core:
 
@@ -68,6 +70,14 @@ class Core:
             self.thread_recv.running = False
         self.thread_recv = RecvThread(self)
         self.thread_recv.start()
+    
+    def call(self, obj):
+        if not isinstance(obj, base_classes.BaseRequest):
+            raise exceptions.ObjectError("Call parameter is not a request object")
+        payload = obj.data()
+        r = self.send(payload)
+        obj.input(r)
+        return obj
         
     def send(self, data):
         id = str(self.id)
@@ -103,7 +113,9 @@ class RecvThread(threading.Thread):
                 result = json.loads(message)
                 if 'update-type' in result:
                     LOG.debug("Got message: %r"%(result))
-                    self.core.eventmanager.trigger(result)
+                    #self.core.eventmanager.trigger(result)
+                    obj = self.buildEvent(result)
+                    self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
                     LOG.debug("Got answer for id %s: %r"%(result['message-id'], result))
                     self.core.answers[result['message-id']] = result
@@ -112,11 +124,19 @@ class RecvThread(threading.Thread):
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
-            except ValueError:
-                LOG.warning("Invalid message: %s"%(message))
+            except (ValueError, exceptions.ObjectError), e:
+                LOG.warning("Invalid message: %s (%s)"%(message, e))
         # end while
         LOG.debug("RecvThread ended.")
             
+    def buildEvent(self, data):
+        name = data["update-type"]
+        try:
+            obj = getattr(events, name)()
+        except AttributeError:
+            raise exceptions.ObjectError("Invalid event %s"%(name))
+        obj.input(data)
+        return obj
             
 class EventManager:
 

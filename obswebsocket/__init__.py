@@ -25,6 +25,9 @@ class obsws:
     def unregister(self, function):
         self._core.eventmanager.unregister(function)
 
+    def call(self, obj):
+        return self._core.call(obj)
+
     def send(self, data):
         return self._core.send(data)
 
