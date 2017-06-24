@@ -28,7 +28,8 @@ class obsws:
         
         :param host: Hostname to connect to
         :param port: TCP Port to connect to (Default is 4444)
-        :param password: Password for the websocket server (Leave this field empty if no auth enabled on the server)
+        :param password: Password for the websocket server (Leave this field empty if no auth enabled
+            on the server)
         """
         self.host = host
         self.port = port
@@ -59,7 +60,8 @@ class obsws:
         Register a new hook in the websocket client
         
         :param function: Callback function pointer for the hook
-        :param event: Event (class from obswebsocket.events module) to trigger the hook on. Default is None, which means trigger on all events.
+        :param event: Event (class from obswebsocket.events module) to trigger the hook on.
+            Default is None, which means trigger on all events.
         :return: Nothing
         """
         self._core.eventmanager.register(function, event)
@@ -69,7 +71,8 @@ class obsws:
         Unregister a new hook in the websocket client
         
         :param function: Callback function pointer for the hook
-        :param event: Event (class from obswebsocket.events module) which triggered the hook on. Default is None, which means unregister this function for all events.
+        :param event: Event (class from obswebsocket.events module) which triggered the hook on.
+            Default is None, which means unregister this function for all events.
         :return: Nothing
         """
         self._core.eventmanager.unregister(function, event)
