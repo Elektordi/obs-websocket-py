@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+include setup.cfg
+include setup.py
+recursive-include obswebsocket *.py
+recursive-include samples *.py

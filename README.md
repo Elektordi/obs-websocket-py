@@ -3,13 +3,25 @@ Python library to communicate with an [obs-websocket](https://github.com/Palakis
 
 _Licensed under the MIT License_
 
+## Project pages
+
+GitHub project: https://github.com/Elektordi/obs-websocket-py
+
+PyPI package: https://pypi.python.org/pypi/obs-websocket-py
+
 ## Installation
 
-Git clone the repo and copy the directory **obswebsocket** in your python project root.
+Just run `pip install obs-websocket-py` in your Python venv or directly on your system.
+
+For manual install, git clone the github repo and copy the directory **obswebsocket** in your python project root.
 
 **Requires**: websocket-client (from pip)
 
 ## Usage
+
+See python scripts in the [samples](https://github.com/Elektordi/obs-websocket-py/tree/master/samples) directory.
+
+Or take a look at the documentation below:
 
 _Output of `pydoc obswebsocket`:_
 
@@ -86,3 +98,8 @@ CLASSES
      |      :param event: Event (class from obswebsocket.events module) which triggered the hook on. Default is None, which means unregister this function for all events.
      |      :return: Nothing
 ```
+
+## Problems?
+
+Please check on [Github project issues](https://github.com/Elektordi/obs-websocket-py/issues), and if nobody else have experienced it before, you can [file a new issue](https://github.com/Elektordi/obs-websocket-py/issues/new).
+
