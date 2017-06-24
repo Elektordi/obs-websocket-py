@@ -78,11 +78,11 @@ if __name__ == '__main__':
         
         for name, vin, vout in data:
             file.write("class %s(base_classes.Base%s):\n"%(name, datatype))
-            file.write("    def __init__(%s):\n"%(", ".join(['self']+vin)))
+            file.write("    def __init__(%s):\n"%(", ".join(['self']+[v.replace('-', '_') for v in vin])))
             file.write("        base_classes.Base%s.__init__(self)\n"%(datatype))
             file.write("        self.name = \"%s\"\n"%(name))
             for v in vin:
-                file.write("        self.datain[\"%s\"] = %s\n"%(v,v))
+                file.write("        self.datain[\"%s\"] = %s\n"%(v,v.replace('-', '_')))
             for v in vout:
                 file.write("        self.dataout[\"%s\"] = None\n"%(v))
             file.write("\n")

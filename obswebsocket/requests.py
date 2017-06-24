@@ -91,10 +91,10 @@ class GetCurrentScene(base_classes.BaseRequest):
 
 
 class SetCurrentScene(base_classes.BaseRequest):
-    def __init__(self, scene-name):
+    def __init__(self, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentScene"
-        self.datain["scene-name"] = scene-name
+        self.datain["scene-name"] = scene_name
 
 
 class GetSceneList(base_classes.BaseRequest):
@@ -112,12 +112,12 @@ class GetSceneList(base_classes.BaseRequest):
 
 
 class SetSourceRender(base_classes.BaseRequest):
-    def __init__(self, source, render, scene-name):
+    def __init__(self, source, render, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSourceRender"
         self.datain["source"] = source
         self.datain["render"] = render
-        self.datain["scene-name"] = scene-name
+        self.datain["scene-name"] = scene_name
 
 
 class GetStudioModeStatus(base_classes.BaseRequest):
@@ -137,10 +137,10 @@ class GetPreviewScene(base_classes.BaseRequest):
 
 
 class SetPreviewScene(base_classes.BaseRequest):
-    def __init__(self, scene-name):
+    def __init__(self, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetPreviewScene"
-        self.datain["scene-name"] = scene-name
+        self.datain["scene-name"] = scene_name
 
 
 class TransitionToProgram(base_classes.BaseRequest):
@@ -212,10 +212,10 @@ class StopRecording(base_classes.BaseRequest):
 
 
 class SetRecordingFolder(base_classes.BaseRequest):
-    def __init__(self, rec-folder):
+    def __init__(self, rec_folder):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetRecordingFolder"
-        self.datain["rec-folder"] = rec-folder
+        self.datain["rec-folder"] = rec_folder
 
 
 class GetRecordingFolder(base_classes.BaseRequest):
@@ -287,10 +287,10 @@ class GetCurrentTransition(base_classes.BaseRequest):
 
 
 class SetCurrentTransition(base_classes.BaseRequest):
-    def __init__(self, transition-name):
+    def __init__(self, transition_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentTransition"
-        self.datain["transition-name"] = transition-name
+        self.datain["transition-name"] = transition_name
 
 
 class SetTransitionDuration(base_classes.BaseRequest):
@@ -394,32 +394,32 @@ class GetSpecialSources(base_classes.BaseRequest):
 
 
 class SetSceneItemPosition(base_classes.BaseRequest):
-    def __init__(self, item, x, y, scene-name):
+    def __init__(self, item, x, y, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemPosition"
         self.datain["item"] = item
         self.datain["x"] = x
         self.datain["y"] = y
-        self.datain["scene-name"] = scene-name
+        self.datain["scene-name"] = scene_name
 
 
 class SetSceneItemTransform(base_classes.BaseRequest):
-    def __init__(self, item, x-scale, y-scale, rotation, scene-name):
+    def __init__(self, item, x_scale, y_scale, rotation, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemTransform"
         self.datain["item"] = item
-        self.datain["x-scale"] = x-scale
-        self.datain["y-scale"] = y-scale
+        self.datain["x-scale"] = x_scale
+        self.datain["y-scale"] = y_scale
         self.datain["rotation"] = rotation
-        self.datain["scene-name"] = scene-name
+        self.datain["scene-name"] = scene_name
 
 
 class SetSceneItemCrop(base_classes.BaseRequest):
-    def __init__(self, item, scene-name, top, bottom, left, right):
+    def __init__(self, item, scene_name, top, bottom, left, right):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemCrop"
         self.datain["item"] = item
-        self.datain["scene-name"] = scene-name
+        self.datain["scene-name"] = scene_name
         self.datain["top"] = top
         self.datain["bottom"] = bottom
         self.datain["left"] = left
@@ -427,10 +427,10 @@ class SetSceneItemCrop(base_classes.BaseRequest):
 
 
 class SetCurrentSceneCollection(base_classes.BaseRequest):
-    def __init__(self, sc-name):
+    def __init__(self, sc_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentSceneCollection"
-        self.datain["sc-name"] = sc-name
+        self.datain["sc-name"] = sc_name
 
 
 class GetCurrentSceneCollection(base_classes.BaseRequest):
@@ -454,10 +454,10 @@ class ListSceneCollections(base_classes.BaseRequest):
 
 
 class SetCurrentProfile(base_classes.BaseRequest):
-    def __init__(self, profile-name):
+    def __init__(self, profile_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentProfile"
-        self.datain["profile-name"] = profile-name
+        self.datain["profile-name"] = profile_name
 
 
 class GetCurrentProfile(base_classes.BaseRequest):
@@ -478,5 +478,152 @@ class ListProfiles(base_classes.BaseRequest):
 
     def getProfiles(self):
         return self.dataout["profiles"]
+
+
+class GetTextGDIPlusProperties(base_classes.BaseRequest):
+    def __init__(self, source, scene_name):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "GetTextGDIPlusProperties"
+        self.datain["source"] = source
+        self.datain["scene-name"] = scene_name
+        self.dataout["align"] = None
+        self.dataout["chatlog"] = None
+        self.dataout["color"] = None
+        self.dataout["extents"] = None
+        self.dataout["file"] = None
+        self.dataout["font"] = None
+        self.dataout["face"] = None
+        self.dataout["flags"] = None
+        self.dataout["size"] = None
+        self.dataout["style"] = None
+        self.dataout["gradient"] = None
+        self.dataout["outline"] = None
+        self.dataout["text"] = None
+        self.dataout["valign"] = None
+        self.dataout["vertical"] = None
+        self.dataout["render"] = None
+
+    def getAlign(self):
+        return self.dataout["align"]
+
+    def getChatlog(self):
+        return self.dataout["chatlog"]
+
+    def getColor(self):
+        return self.dataout["color"]
+
+    def getExtents(self):
+        return self.dataout["extents"]
+
+    def getFile(self):
+        return self.dataout["file"]
+
+    def getFont(self):
+        return self.dataout["font"]
+
+    def getFace(self):
+        return self.dataout["face"]
+
+    def getFlags(self):
+        return self.dataout["flags"]
+
+    def getSize(self):
+        return self.dataout["size"]
+
+    def getStyle(self):
+        return self.dataout["style"]
+
+    def getGradient(self):
+        return self.dataout["gradient"]
+
+    def getOutline(self):
+        return self.dataout["outline"]
+
+    def getText(self):
+        return self.dataout["text"]
+
+    def getValign(self):
+        return self.dataout["valign"]
+
+    def getVertical(self):
+        return self.dataout["vertical"]
+
+    def getRender(self):
+        return self.dataout["render"]
+
+
+class SetTextGDIPlusProperties(base_classes.BaseRequest):
+    def __init__(self, source, scene_name, align, chatlog, color, extents, file, font, face, flags, size, style, gradient, outline, text, valign, vertical, render):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "SetTextGDIPlusProperties"
+        self.datain["source"] = source
+        self.datain["scene-name"] = scene_name
+        self.datain["align"] = align
+        self.datain["chatlog"] = chatlog
+        self.datain["color"] = color
+        self.datain["extents"] = extents
+        self.datain["file"] = file
+        self.datain["font"] = font
+        self.datain["face"] = face
+        self.datain["flags"] = flags
+        self.datain["size"] = size
+        self.datain["style"] = style
+        self.datain["gradient"] = gradient
+        self.datain["outline"] = outline
+        self.datain["text"] = text
+        self.datain["valign"] = valign
+        self.datain["vertical"] = vertical
+        self.datain["render"] = render
+
+
+class GetBrowserSourceProperties(base_classes.BaseRequest):
+    def __init__(self, source, scene_name):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "GetBrowserSourceProperties"
+        self.datain["source"] = source
+        self.datain["scene-name"] = scene_name
+        self.dataout["url"] = None
+        self.dataout["css"] = None
+        self.dataout["width"] = None
+        self.dataout["height"] = None
+        self.dataout["fps"] = None
+        self.dataout["shutdown"] = None
+        self.dataout["render"] = None
+
+    def getUrl(self):
+        return self.dataout["url"]
+
+    def getCss(self):
+        return self.dataout["css"]
+
+    def getWidth(self):
+        return self.dataout["width"]
+
+    def getHeight(self):
+        return self.dataout["height"]
+
+    def getFps(self):
+        return self.dataout["fps"]
+
+    def getShutdown(self):
+        return self.dataout["shutdown"]
+
+    def getRender(self):
+        return self.dataout["render"]
+
+
+class SetBrowserSourceProperties(base_classes.BaseRequest):
+    def __init__(self, source, scene_name, url, css, width, height, fps, shutdown, render):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "SetBrowserSourceProperties"
+        self.datain["source"] = source
+        self.datain["scene-name"] = scene_name
+        self.datain["url"] = url
+        self.datain["css"] = css
+        self.datain["width"] = width
+        self.datain["height"] = height
+        self.datain["fps"] = fps
+        self.datain["shutdown"] = shutdown
+        self.datain["render"] = render
 
 
