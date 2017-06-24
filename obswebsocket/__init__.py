@@ -19,11 +19,11 @@ class obsws:
     def disconnect(self):
         self._core.disconnect()
 
-    def register(self, function):
-        self._core.eventmanager.register(function)
+    def register(self, function, event = None):
+        self._core.eventmanager.register(function, event)
 
-    def unregister(self, function):
-        self._core.eventmanager.unregister(function)
+    def unregister(self, function, event = None):
+        self._core.eventmanager.unregister(function, event)
 
     def call(self, obj):
         return self._core.call(obj)

@@ -143,13 +143,16 @@ class EventManager:
     def __init__(self):
         self.functions = []
     
-    def register(self, hook):
-        self.functions.append(hook)
+    def register(self, callback, trigger):
+        self.functions.append((callback, trigger))
         
-    def unregister(self, hook):
-        self.functions.remove(hook)
+    def unregister(self, callback, trigger):
+        for c, t in self.functions:
+            if (c == callback) and (trigger is None or t == trigger):
+                    self.functions.remove((c, t))
         
     def trigger(self, data):
-        for f in self.functions:
-            f(data)
+        for callback, trigger in self.functions:
+            if trigger is None or isinstance(data, trigger):
+                callback(data)
     
