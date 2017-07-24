@@ -17,20 +17,57 @@ from . import exceptions
 from . import base_classes
 from . import events
 
-class Core:
+class obsws:
+    """
+    Core class for using obs-websocket-py
+    
+    Simple usage:
+        >>> import obswebsocket, obswebsocket.requests
+        >>> client = obswebsocket.obsws("localhost", 4444, "secret")
+        >>> client.connect()
+        >>> client.call(obswebsocket.requests.GetVersion()).getObsWebsocketVersion()
+        u'4.1.0'
+        >>> client.disconnect()
+        
+    For advanced usage, including events callback, see the 'samples' directory. 
+    """
 
-    def __init__(self):
+    def __init__(self, host = None, port = 4444, password = ''):
+        """
+        Construct a new obsws wrapper
+        
+        :param host: Hostname to connect to
+        :param port: TCP Port to connect to (Default is 4444)
+        :param password: Password for the websocket server (Leave this field empty if no auth enabled
+            on the server)
+        """
         self.id = 1
         self.thread_recv = None
         self.eventmanager = EventManager()
         self.answers = {}
+        
+        self.host = host
+        self.port = port
+        self.password = password
 
-    def connect(self, host, port):
+    def connect(self, host = None, port = None):
+        """
+        Connect to the websocket server
+        
+        :return: Nothing
+        """
+        if not host is None:
+            self.host = host
+        if not port is None:
+            self.port = port
+            
         try:
             self.ws = websocket.WebSocket()
             LOG.info("Connecting...")
-            self.ws.connect("ws://%s:%d"%(host, port))
+            self.ws.connect("ws://%s:%d"%(self.host, self.port))
             LOG.info("Connected!")
+            self._auth(self.password)
+            self._run_threads()
         except socket.error, e:
             raise exceptions.ConnectionFailure(str(e))
     
@@ -39,6 +76,11 @@ class Core:
         raise exceptions.ConnectionFailure("Reconnect not implemented")
             
     def disconnect(self):
+        """
+        Disconnect from websocket server
+        
+        :return: Nothing
+        """    
         LOG.info("Disconnecting...")
         if not self.thread_recv is None:
             self.thread_recv.running = False
@@ -47,7 +89,7 @@ class Core:
         except socket.error, e:
             pass
         
-    def auth(self, password):
+    def _auth(self, password):
         auth_payload = {"request-type": "GetAuthRequired", "message-id": str(self.id)}
         self.id += 1
         self.ws.send(json.dumps(auth_payload))
@@ -65,13 +107,19 @@ class Core:
                 raise exceptions.ConnectionFailure(result['error'])      
         pass
         
-    def run_threads(self):
+    def _run_threads(self):
         if not self.thread_recv is None:
             self.thread_recv.running = False
         self.thread_recv = RecvThread(self)
         self.thread_recv.start()
     
     def call(self, obj):
+        """
+        Make a call to the OBS server through the Websocket.
+        
+        :param obj: Request (class from obswebsocket.requests module) to send to the server.
+        :return: Request object populated with response data.
+        """
         if not isinstance(obj, base_classes.BaseRequest):
             raise exceptions.ObjectError("Call parameter is not a request object")
         payload = obj.data()
@@ -80,6 +128,12 @@ class Core:
         return obj
         
     def send(self, data):
+        """
+        Make a raw json call to the OBS server through the Websocket.
+        
+        :param obj: Request (python dict) to send to the server. Do not include field "message-id".
+        :return: Response (python dict) from the server.
+        """
         id = str(self.id)
         self.id += 1
         data["message-id"] = id
@@ -95,6 +149,28 @@ class Core:
             time.sleep(0.1)    
         raise exceptions.MessageTimeout("No answer for message %s"%(id))
             
+    def register(self, function, event = None):
+        """
+        Register a new hook in the websocket client
+        
+        :param function: Callback function pointer for the hook
+        :param event: Event (class from obswebsocket.events module) to trigger the hook on.
+            Default is None, which means trigger on all events.
+        :return: Nothing
+        """
+        self.eventmanager.register(function, event)
+
+    def unregister(self, function, event = None):
+        """
+        Unregister a new hook in the websocket client
+        
+        :param function: Callback function pointer for the hook
+        :param event: Event (class from obswebsocket.events module) which triggered the hook on.
+            Default is None, which means unregister this function for all events.
+        :return: Nothing
+        """
+        self.eventmanager.unregister(function, event)
+
         
 
 class RecvThread(threading.Thread):
@@ -137,6 +213,7 @@ class RecvThread(threading.Thread):
             raise exceptions.ObjectError("Invalid event %s"%(name))
         obj.input(data)
         return obj
+        
             
 class EventManager:
 
