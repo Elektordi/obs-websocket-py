@@ -6,15 +6,15 @@ import copy
 class BaseEvent:
     def __init__(self):
         self.name = "?"
-        self.dataout = {}
+        self.datain = {}
         
     def input(self, data):
         r = copy.copy(data)
         del r['update-type']
-        self.dataout = r
+        self.datain = r
         
     def __repr__(self):
-        return "<%s event (%r)>"%(self.name, self.dataout)
+        return "<%s event (%r)>"%(self.name, self.datain)
         
     
 class BaseRequest:
@@ -34,7 +34,7 @@ class BaseRequest:
         del r['message-id']
         self.status = (r['status']=="ok")
         del r['status']
-        self.dataout = r
+        self.datain = r
         
     def __repr__(self):
         if self.status is None:

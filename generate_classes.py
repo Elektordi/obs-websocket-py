@@ -48,20 +48,22 @@ if __name__ == '__main__':
             m = re.match('^#### \"?([A-Za-z0-9]+)\"?', l)
             if m:
                 name = m.group(1)
-                tvars = vars_out # Default for events
+                tvars = vars_in # Default for events
      
         elif l[0] == '_':
             if l[:9] == "__Request":
-                tvars = vars_in
-            elif l[:10] == "__Response":
                 tvars = vars_out
+            elif l[:10] == "__Response":
+                tvars = vars_in
             
                 
         elif l[0] == '-' and not tvars is None:
             m = re.match('^\- \*\*\"?([a-z0-9\-]+)\"?\*\*', l)
             if m:
                 tvars.append(m.group(1))
-        
+                
+        elif l[:8] == 'Objects ':
+            tvars = [] # Discard following vars                
 
     for datatype, data in [('Event',events),('Request', requests)]:
         print "%s: %r"%(datatype, data)
@@ -78,18 +80,18 @@ if __name__ == '__main__':
         
         for name, vin, vout in data:
             file.write("class %s(base_classes.Base%s):\n"%(name, datatype))
-            file.write("    def __init__(%s):\n"%(", ".join(['self']+[v.replace('-', '_') for v in vin])))
+            file.write("    def __init__(%s):\n"%(", ".join(['self']+[v.replace('-', '_') for v in vout])))
             file.write("        base_classes.Base%s.__init__(self)\n"%(datatype))
             file.write("        self.name = \"%s\"\n"%(name))
             for v in vin:
-                file.write("        self.datain[\"%s\"] = %s\n"%(v,v.replace('-', '_')))
+                file.write("        self.datain[\"%s\"] = None\n"%(v))
             for v in vout:
-                file.write("        self.dataout[\"%s\"] = None\n"%(v))
+                file.write("        self.dataout[\"%s\"] = %s\n"%(v,v.replace('-', '_')))
             file.write("\n")
-            for v in vout:
+            for v in vin:
                 cc = ''.join(x.capitalize() for x in v.split('-'))
                 file.write("    def get%s(self):\n"%(cc))
-                file.write("        return self.dataout[\"%s\"]\n"%(v))
+                file.write("        return self.datain[\"%s\"]\n"%(v))
                 file.write("\n")
             file.write("\n")
          

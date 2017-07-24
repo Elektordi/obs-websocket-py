@@ -9,125 +9,93 @@ class GetVersion(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetVersion"
-        self.dataout["version"] = None
-        self.dataout["obs-websocket-version"] = None
-        self.dataout["obs-studio-version"] = None
+        self.datain["version"] = None
+        self.datain["obs-websocket-version"] = None
+        self.datain["obs-studio-version"] = None
 
     def getVersion(self):
-        return self.dataout["version"]
+        return self.datain["version"]
 
     def getObsWebsocketVersion(self):
-        return self.dataout["obs-websocket-version"]
+        return self.datain["obs-websocket-version"]
 
     def getObsStudioVersion(self):
-        return self.dataout["obs-studio-version"]
+        return self.datain["obs-studio-version"]
 
 
 class GetAuthRequired(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetAuthRequired"
-        self.dataout["challenge"] = None
-        self.dataout["salt"] = None
+        self.datain["challenge"] = None
+        self.datain["salt"] = None
 
     def getChallenge(self):
-        return self.dataout["challenge"]
+        return self.datain["challenge"]
 
     def getSalt(self):
-        return self.dataout["salt"]
+        return self.datain["salt"]
 
 
 class Authenticate(base_classes.BaseRequest):
     def __init__(self, auth):
         base_classes.BaseRequest.__init__(self)
         self.name = "Authenticate"
-        self.datain["auth"] = auth
+        self.dataout["auth"] = auth
 
 
 class GetCurrentScene(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetCurrentScene"
-        self.dataout["name"] = None
-        self.dataout["sources"] = None
-        self.dataout["name"] = None
-        self.dataout["type"] = None
-        self.dataout["volume"] = None
-        self.dataout["x"] = None
-        self.dataout["y"] = None
-        self.dataout["cx"] = None
-        self.dataout["cy"] = None
-        self.dataout["render"] = None
+        self.datain["name"] = None
+        self.datain["sources"] = None
 
     def getName(self):
-        return self.dataout["name"]
+        return self.datain["name"]
 
     def getSources(self):
-        return self.dataout["sources"]
-
-    def getName(self):
-        return self.dataout["name"]
-
-    def getType(self):
-        return self.dataout["type"]
-
-    def getVolume(self):
-        return self.dataout["volume"]
-
-    def getX(self):
-        return self.dataout["x"]
-
-    def getY(self):
-        return self.dataout["y"]
-
-    def getCx(self):
-        return self.dataout["cx"]
-
-    def getCy(self):
-        return self.dataout["cy"]
-
-    def getRender(self):
-        return self.dataout["render"]
+        return self.datain["sources"]
 
 
 class SetCurrentScene(base_classes.BaseRequest):
     def __init__(self, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentScene"
-        self.datain["scene-name"] = scene_name
+        self.dataout["scene-name"] = scene_name
 
 
 class GetSceneList(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetSceneList"
-        self.dataout["current-scene"] = None
-        self.dataout["scenes"] = None
+        self.datain["current-scene"] = None
+        self.datain["scenes"] = None
 
     def getCurrentScene(self):
-        return self.dataout["current-scene"]
+        return self.datain["current-scene"]
 
     def getScenes(self):
-        return self.dataout["scenes"]
+        return self.datain["scenes"]
 
 
 class SetSourceRender(base_classes.BaseRequest):
     def __init__(self, source, render, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSourceRender"
-        self.datain["source"] = source
-        self.datain["render"] = render
-        self.datain["scene-name"] = scene_name
+        self.dataout["source"] = source
+        self.dataout["render"] = render
+        self.dataout["scene-name"] = scene_name
 
 
 class GetStudioModeStatus(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetStudioModeStatus"
-        self.dataout["studio-mode"] = None
+        self.datain["studio-mode"] = None
 
     def getStudioMode(self):
-        return self.dataout["studio-mode"]
+        return self.datain["studio-mode"]
 
 
 class GetPreviewScene(base_classes.BaseRequest):
@@ -140,21 +108,22 @@ class SetPreviewScene(base_classes.BaseRequest):
     def __init__(self, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetPreviewScene"
-        self.datain["scene-name"] = scene_name
+        self.dataout["scene-name"] = scene_name
 
 
 class TransitionToProgram(base_classes.BaseRequest):
-    def __init__(self):
+    def __init__(self, with_transition):
         base_classes.BaseRequest.__init__(self)
         self.name = "TransitionToProgram"
-        self.dataout["name"] = None
-        self.dataout["duration"] = None
+        self.datain["name"] = None
+        self.datain["duration"] = None
+        self.dataout["with-transition"] = with_transition
 
     def getName(self):
-        return self.dataout["name"]
+        return self.datain["name"]
 
     def getDuration(self):
-        return self.dataout["duration"]
+        return self.datain["duration"]
 
 
 class EnableStudioMode(base_classes.BaseRequest):
@@ -182,15 +151,25 @@ class StartStopStreaming(base_classes.BaseRequest):
 
 
 class StartStopRecording(base_classes.BaseRequest):
-    def __init__(self):
+    def __init__(self, stream):
         base_classes.BaseRequest.__init__(self)
         self.name = "StartStopRecording"
+        self.dataout["stream"] = stream
 
 
 class StartStreaming(base_classes.BaseRequest):
-    def __init__(self):
+    def __init__(self, stream, settings, type, metadata, server, key, use_auth, username, password):
         base_classes.BaseRequest.__init__(self)
         self.name = "StartStreaming"
+        self.dataout["stream"] = stream
+        self.dataout["settings"] = settings
+        self.dataout["type"] = type
+        self.dataout["metadata"] = metadata
+        self.dataout["server"] = server
+        self.dataout["key"] = key
+        self.dataout["use-auth"] = use_auth
+        self.dataout["username"] = username
+        self.dataout["password"] = password
 
 
 class StopStreaming(base_classes.BaseRequest):
@@ -215,415 +194,453 @@ class SetRecordingFolder(base_classes.BaseRequest):
     def __init__(self, rec_folder):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetRecordingFolder"
-        self.datain["rec-folder"] = rec_folder
+        self.dataout["rec-folder"] = rec_folder
 
 
 class GetRecordingFolder(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetRecordingFolder"
-        self.dataout["rec-folder"] = None
+        self.datain["rec-folder"] = None
 
     def getRecFolder(self):
-        return self.dataout["rec-folder"]
+        return self.datain["rec-folder"]
 
 
 class GetStreamingStatus(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetStreamingStatus"
-        self.dataout["streaming"] = None
-        self.dataout["recording"] = None
-        self.dataout["stream-timecode"] = None
-        self.dataout["rec-timecode"] = None
-        self.dataout["preview-only"] = None
+        self.datain["streaming"] = None
+        self.datain["recording"] = None
+        self.datain["stream-timecode"] = None
+        self.datain["rec-timecode"] = None
+        self.datain["preview-only"] = None
 
     def getStreaming(self):
-        return self.dataout["streaming"]
+        return self.datain["streaming"]
 
     def getRecording(self):
-        return self.dataout["recording"]
+        return self.datain["recording"]
 
     def getStreamTimecode(self):
-        return self.dataout["stream-timecode"]
+        return self.datain["stream-timecode"]
 
     def getRecTimecode(self):
-        return self.dataout["rec-timecode"]
+        return self.datain["rec-timecode"]
 
     def getPreviewOnly(self):
-        return self.dataout["preview-only"]
+        return self.datain["preview-only"]
 
 
 class GetTransitionList(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetTransitionList"
-        self.dataout["current-transition"] = None
-        self.dataout["transitions"] = None
-        self.dataout["name"] = None
+        self.datain["current-transition"] = None
+        self.datain["transitions"] = None
 
     def getCurrentTransition(self):
-        return self.dataout["current-transition"]
+        return self.datain["current-transition"]
 
     def getTransitions(self):
-        return self.dataout["transitions"]
-
-    def getName(self):
-        return self.dataout["name"]
+        return self.datain["transitions"]
 
 
 class GetCurrentTransition(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetCurrentTransition"
-        self.dataout["name"] = None
-        self.dataout["duration"] = None
+        self.datain["name"] = None
+        self.datain["duration"] = None
 
     def getName(self):
-        return self.dataout["name"]
+        return self.datain["name"]
 
     def getDuration(self):
-        return self.dataout["duration"]
+        return self.datain["duration"]
 
 
 class SetCurrentTransition(base_classes.BaseRequest):
     def __init__(self, transition_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentTransition"
-        self.datain["transition-name"] = transition_name
+        self.dataout["transition-name"] = transition_name
 
 
 class SetTransitionDuration(base_classes.BaseRequest):
     def __init__(self, duration):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetTransitionDuration"
-        self.datain["duration"] = duration
+        self.dataout["duration"] = duration
 
 
 class GetTransitionDuration(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetTransitionDuration"
-        self.dataout["transition-duration"] = None
+        self.datain["transition-duration"] = None
 
     def getTransitionDuration(self):
-        return self.dataout["transition-duration"]
+        return self.datain["transition-duration"]
 
 
 class SetVolume(base_classes.BaseRequest):
     def __init__(self, source, volume):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetVolume"
-        self.datain["source"] = source
-        self.datain["volume"] = volume
+        self.dataout["source"] = source
+        self.dataout["volume"] = volume
 
 
 class GetVolume(base_classes.BaseRequest):
     def __init__(self, source):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetVolume"
-        self.datain["source"] = source
-        self.dataout["name"] = None
-        self.dataout["volume"] = None
-        self.dataout["muted"] = None
+        self.datain["name"] = None
+        self.datain["volume"] = None
+        self.datain["muted"] = None
+        self.dataout["source"] = source
 
     def getName(self):
-        return self.dataout["name"]
+        return self.datain["name"]
 
     def getVolume(self):
-        return self.dataout["volume"]
+        return self.datain["volume"]
 
     def getMuted(self):
-        return self.dataout["muted"]
+        return self.datain["muted"]
 
 
 class SetMute(base_classes.BaseRequest):
     def __init__(self, source, mute):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetMute"
-        self.datain["source"] = source
-        self.datain["mute"] = mute
+        self.dataout["source"] = source
+        self.dataout["mute"] = mute
 
 
 class GetMute(base_classes.BaseRequest):
     def __init__(self, source):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetMute"
-        self.datain["source"] = source
-        self.dataout["name"] = None
-        self.dataout["muted"] = None
+        self.datain["name"] = None
+        self.datain["muted"] = None
+        self.dataout["source"] = source
 
     def getName(self):
-        return self.dataout["name"]
+        return self.datain["name"]
 
     def getMuted(self):
-        return self.dataout["muted"]
+        return self.datain["muted"]
 
 
 class ToggleMute(base_classes.BaseRequest):
     def __init__(self, source):
         base_classes.BaseRequest.__init__(self)
         self.name = "ToggleMute"
-        self.datain["source"] = source
+        self.dataout["source"] = source
 
 
 class GetSpecialSources(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetSpecialSources"
-        self.dataout["desktop-1"] = None
-        self.dataout["desktop-1"] = None
-        self.dataout["mic-1"] = None
-        self.dataout["mic-2"] = None
-        self.dataout["mic-3"] = None
+        self.datain["desktop-1"] = None
+        self.datain["desktop-1"] = None
+        self.datain["mic-1"] = None
+        self.datain["mic-2"] = None
+        self.datain["mic-3"] = None
 
     def getDesktop1(self):
-        return self.dataout["desktop-1"]
+        return self.datain["desktop-1"]
 
     def getDesktop1(self):
-        return self.dataout["desktop-1"]
+        return self.datain["desktop-1"]
 
     def getMic1(self):
-        return self.dataout["mic-1"]
+        return self.datain["mic-1"]
 
     def getMic2(self):
-        return self.dataout["mic-2"]
+        return self.datain["mic-2"]
 
     def getMic3(self):
-        return self.dataout["mic-3"]
+        return self.datain["mic-3"]
 
 
 class SetSceneItemPosition(base_classes.BaseRequest):
     def __init__(self, item, x, y, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemPosition"
-        self.datain["item"] = item
-        self.datain["x"] = x
-        self.datain["y"] = y
-        self.datain["scene-name"] = scene_name
+        self.dataout["item"] = item
+        self.dataout["x"] = x
+        self.dataout["y"] = y
+        self.dataout["scene-name"] = scene_name
 
 
 class SetSceneItemTransform(base_classes.BaseRequest):
     def __init__(self, item, x_scale, y_scale, rotation, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemTransform"
-        self.datain["item"] = item
-        self.datain["x-scale"] = x_scale
-        self.datain["y-scale"] = y_scale
-        self.datain["rotation"] = rotation
-        self.datain["scene-name"] = scene_name
+        self.dataout["item"] = item
+        self.dataout["x-scale"] = x_scale
+        self.dataout["y-scale"] = y_scale
+        self.dataout["rotation"] = rotation
+        self.dataout["scene-name"] = scene_name
 
 
 class SetSceneItemCrop(base_classes.BaseRequest):
     def __init__(self, item, scene_name, top, bottom, left, right):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemCrop"
-        self.datain["item"] = item
-        self.datain["scene-name"] = scene_name
-        self.datain["top"] = top
-        self.datain["bottom"] = bottom
-        self.datain["left"] = left
-        self.datain["right"] = right
+        self.dataout["item"] = item
+        self.dataout["scene-name"] = scene_name
+        self.dataout["top"] = top
+        self.dataout["bottom"] = bottom
+        self.dataout["left"] = left
+        self.dataout["right"] = right
 
 
 class SetCurrentSceneCollection(base_classes.BaseRequest):
     def __init__(self, sc_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentSceneCollection"
-        self.datain["sc-name"] = sc_name
+        self.dataout["sc-name"] = sc_name
 
 
 class GetCurrentSceneCollection(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetCurrentSceneCollection"
-        self.dataout["sc-name"] = None
+        self.datain["sc-name"] = None
 
     def getScName(self):
-        return self.dataout["sc-name"]
+        return self.datain["sc-name"]
 
 
 class ListSceneCollections(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "ListSceneCollections"
-        self.dataout["scene-collections"] = None
+        self.datain["scene-collections"] = None
 
     def getSceneCollections(self):
-        return self.dataout["scene-collections"]
+        return self.datain["scene-collections"]
+
+
+class SetStreamSettings(base_classes.BaseRequest):
+    def __init__(self, type, settings, save, server, key, use_auth, username, password):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "SetStreamSettings"
+        self.datain["type"] = None
+        self.datain["settings"] = None
+        self.datain["server"] = None
+        self.datain["key"] = None
+        self.datain["use-auth"] = None
+        self.datain["username"] = None
+        self.datain["password"] = None
+        self.dataout["type"] = type
+        self.dataout["settings"] = settings
+        self.dataout["save"] = save
+        self.dataout["server"] = server
+        self.dataout["key"] = key
+        self.dataout["use-auth"] = use_auth
+        self.dataout["username"] = username
+        self.dataout["password"] = password
+
+    def getType(self):
+        return self.datain["type"]
+
+    def getSettings(self):
+        return self.datain["settings"]
+
+    def getServer(self):
+        return self.datain["server"]
+
+    def getKey(self):
+        return self.datain["key"]
+
+    def getUseAuth(self):
+        return self.datain["use-auth"]
+
+    def getUsername(self):
+        return self.datain["username"]
+
+    def getPassword(self):
+        return self.datain["password"]
 
 
 class SetCurrentProfile(base_classes.BaseRequest):
     def __init__(self, profile_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetCurrentProfile"
-        self.datain["profile-name"] = profile_name
+        self.dataout["profile-name"] = profile_name
 
 
 class GetCurrentProfile(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetCurrentProfile"
-        self.dataout["profile-name"] = None
+        self.datain["profile-name"] = None
 
     def getProfileName(self):
-        return self.dataout["profile-name"]
+        return self.datain["profile-name"]
 
 
 class ListProfiles(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "ListProfiles"
-        self.dataout["profiles"] = None
+        self.datain["profiles"] = None
 
     def getProfiles(self):
-        return self.dataout["profiles"]
+        return self.datain["profiles"]
 
 
 class GetTextGDIPlusProperties(base_classes.BaseRequest):
     def __init__(self, source, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetTextGDIPlusProperties"
-        self.datain["source"] = source
-        self.datain["scene-name"] = scene_name
-        self.dataout["align"] = None
-        self.dataout["chatlog"] = None
-        self.dataout["color"] = None
-        self.dataout["extents"] = None
-        self.dataout["file"] = None
-        self.dataout["font"] = None
-        self.dataout["face"] = None
-        self.dataout["flags"] = None
-        self.dataout["size"] = None
-        self.dataout["style"] = None
-        self.dataout["gradient"] = None
-        self.dataout["outline"] = None
-        self.dataout["text"] = None
-        self.dataout["valign"] = None
-        self.dataout["vertical"] = None
-        self.dataout["render"] = None
+        self.datain["align"] = None
+        self.datain["chatlog"] = None
+        self.datain["color"] = None
+        self.datain["extents"] = None
+        self.datain["file"] = None
+        self.datain["font"] = None
+        self.datain["face"] = None
+        self.datain["flags"] = None
+        self.datain["size"] = None
+        self.datain["style"] = None
+        self.datain["gradient"] = None
+        self.datain["outline"] = None
+        self.datain["text"] = None
+        self.datain["valign"] = None
+        self.datain["vertical"] = None
+        self.datain["render"] = None
+        self.dataout["source"] = source
+        self.dataout["scene-name"] = scene_name
 
     def getAlign(self):
-        return self.dataout["align"]
+        return self.datain["align"]
 
     def getChatlog(self):
-        return self.dataout["chatlog"]
+        return self.datain["chatlog"]
 
     def getColor(self):
-        return self.dataout["color"]
+        return self.datain["color"]
 
     def getExtents(self):
-        return self.dataout["extents"]
+        return self.datain["extents"]
 
     def getFile(self):
-        return self.dataout["file"]
+        return self.datain["file"]
 
     def getFont(self):
-        return self.dataout["font"]
+        return self.datain["font"]
 
     def getFace(self):
-        return self.dataout["face"]
+        return self.datain["face"]
 
     def getFlags(self):
-        return self.dataout["flags"]
+        return self.datain["flags"]
 
     def getSize(self):
-        return self.dataout["size"]
+        return self.datain["size"]
 
     def getStyle(self):
-        return self.dataout["style"]
+        return self.datain["style"]
 
     def getGradient(self):
-        return self.dataout["gradient"]
+        return self.datain["gradient"]
 
     def getOutline(self):
-        return self.dataout["outline"]
+        return self.datain["outline"]
 
     def getText(self):
-        return self.dataout["text"]
+        return self.datain["text"]
 
     def getValign(self):
-        return self.dataout["valign"]
+        return self.datain["valign"]
 
     def getVertical(self):
-        return self.dataout["vertical"]
+        return self.datain["vertical"]
 
     def getRender(self):
-        return self.dataout["render"]
+        return self.datain["render"]
 
 
 class SetTextGDIPlusProperties(base_classes.BaseRequest):
     def __init__(self, source, scene_name, align, chatlog, color, extents, file, font, face, flags, size, style, gradient, outline, text, valign, vertical, render):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetTextGDIPlusProperties"
-        self.datain["source"] = source
-        self.datain["scene-name"] = scene_name
-        self.datain["align"] = align
-        self.datain["chatlog"] = chatlog
-        self.datain["color"] = color
-        self.datain["extents"] = extents
-        self.datain["file"] = file
-        self.datain["font"] = font
-        self.datain["face"] = face
-        self.datain["flags"] = flags
-        self.datain["size"] = size
-        self.datain["style"] = style
-        self.datain["gradient"] = gradient
-        self.datain["outline"] = outline
-        self.datain["text"] = text
-        self.datain["valign"] = valign
-        self.datain["vertical"] = vertical
-        self.datain["render"] = render
+        self.dataout["source"] = source
+        self.dataout["scene-name"] = scene_name
+        self.dataout["align"] = align
+        self.dataout["chatlog"] = chatlog
+        self.dataout["color"] = color
+        self.dataout["extents"] = extents
+        self.dataout["file"] = file
+        self.dataout["font"] = font
+        self.dataout["face"] = face
+        self.dataout["flags"] = flags
+        self.dataout["size"] = size
+        self.dataout["style"] = style
+        self.dataout["gradient"] = gradient
+        self.dataout["outline"] = outline
+        self.dataout["text"] = text
+        self.dataout["valign"] = valign
+        self.dataout["vertical"] = vertical
+        self.dataout["render"] = render
 
 
 class GetBrowserSourceProperties(base_classes.BaseRequest):
     def __init__(self, source, scene_name):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetBrowserSourceProperties"
-        self.datain["source"] = source
-        self.datain["scene-name"] = scene_name
-        self.dataout["url"] = None
-        self.dataout["css"] = None
-        self.dataout["width"] = None
-        self.dataout["height"] = None
-        self.dataout["fps"] = None
-        self.dataout["shutdown"] = None
-        self.dataout["render"] = None
+        self.datain["url"] = None
+        self.datain["css"] = None
+        self.datain["width"] = None
+        self.datain["height"] = None
+        self.datain["fps"] = None
+        self.datain["shutdown"] = None
+        self.datain["render"] = None
+        self.dataout["source"] = source
+        self.dataout["scene-name"] = scene_name
 
     def getUrl(self):
-        return self.dataout["url"]
+        return self.datain["url"]
 
     def getCss(self):
-        return self.dataout["css"]
+        return self.datain["css"]
 
     def getWidth(self):
-        return self.dataout["width"]
+        return self.datain["width"]
 
     def getHeight(self):
-        return self.dataout["height"]
+        return self.datain["height"]
 
     def getFps(self):
-        return self.dataout["fps"]
+        return self.datain["fps"]
 
     def getShutdown(self):
-        return self.dataout["shutdown"]
+        return self.datain["shutdown"]
 
     def getRender(self):
-        return self.dataout["render"]
+        return self.datain["render"]
 
 
 class SetBrowserSourceProperties(base_classes.BaseRequest):
     def __init__(self, source, scene_name, url, css, width, height, fps, shutdown, render):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetBrowserSourceProperties"
-        self.datain["source"] = source
-        self.datain["scene-name"] = scene_name
-        self.datain["url"] = url
-        self.datain["css"] = css
-        self.datain["width"] = width
-        self.datain["height"] = height
-        self.datain["fps"] = fps
-        self.datain["shutdown"] = shutdown
-        self.datain["render"] = render
+        self.dataout["source"] = source
+        self.dataout["scene-name"] = scene_name
+        self.dataout["url"] = url
+        self.dataout["css"] = css
+        self.dataout["width"] = width
+        self.dataout["height"] = height
+        self.dataout["fps"] = fps
+        self.dataout["shutdown"] = shutdown
+        self.dataout["render"] = render
 
 

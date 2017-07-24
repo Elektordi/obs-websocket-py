@@ -9,14 +9,14 @@ class SwitchScenes(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "SwitchScenes"
-        self.dataout["scene-name"] = None
-        self.dataout["sources"] = None
+        self.datain["scene-name"] = None
+        self.datain["sources"] = None
 
     def getSceneName(self):
-        return self.dataout["scene-name"]
+        return self.datain["scene-name"]
 
     def getSources(self):
-        return self.dataout["sources"]
+        return self.datain["sources"]
 
 
 class ScenesChanged(base_classes.BaseEvent):
@@ -29,56 +29,56 @@ class SourceOrderChanged(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "SourceOrderChanged"
-        self.dataout["scene-name"] = None
+        self.datain["scene-name"] = None
 
     def getSceneName(self):
-        return self.dataout["scene-name"]
+        return self.datain["scene-name"]
 
 
 class SceneItemAdded(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "SceneItemAdded"
-        self.dataout["scene-name"] = None
-        self.dataout["item-name"] = None
+        self.datain["scene-name"] = None
+        self.datain["item-name"] = None
 
     def getSceneName(self):
-        return self.dataout["scene-name"]
+        return self.datain["scene-name"]
 
     def getItemName(self):
-        return self.dataout["item-name"]
+        return self.datain["item-name"]
 
 
 class SceneItemRemoved(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "SceneItemRemoved"
-        self.dataout["scene-name"] = None
-        self.dataout["item-name"] = None
+        self.datain["scene-name"] = None
+        self.datain["item-name"] = None
 
     def getSceneName(self):
-        return self.dataout["scene-name"]
+        return self.datain["scene-name"]
 
     def getItemName(self):
-        return self.dataout["item-name"]
+        return self.datain["item-name"]
 
 
 class SceneItemVisibilityChanged(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "SceneItemVisibilityChanged"
-        self.dataout["scene-name"] = None
-        self.dataout["item-name"] = None
-        self.dataout["item-visible"] = None
+        self.datain["scene-name"] = None
+        self.datain["item-name"] = None
+        self.datain["item-visible"] = None
 
     def getSceneName(self):
-        return self.dataout["scene-name"]
+        return self.datain["scene-name"]
 
     def getItemName(self):
-        return self.dataout["item-name"]
+        return self.datain["item-name"]
 
     def getItemVisible(self):
-        return self.dataout["item-visible"]
+        return self.datain["item-visible"]
 
 
 class SceneCollectionChanged(base_classes.BaseEvent):
@@ -97,20 +97,20 @@ class SwitchTransition(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "SwitchTransition"
-        self.dataout["transition-name"] = None
+        self.datain["transition-name"] = None
 
     def getTransitionName(self):
-        return self.dataout["transition-name"]
+        return self.datain["transition-name"]
 
 
 class TransitionDurationChanged(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "TransitionDurationChanged"
-        self.dataout["new-duration"] = None
+        self.datain["new-duration"] = None
 
     def getNewDuration(self):
-        return self.dataout["new-duration"]
+        return self.datain["new-duration"]
 
 
 class TransitionListChanged(base_classes.BaseEvent):
@@ -129,24 +129,24 @@ class PreviewSceneChanged(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "PreviewSceneChanged"
-        self.dataout["scene-name"] = None
-        self.dataout["sources"] = None
+        self.datain["scene-name"] = None
+        self.datain["sources"] = None
 
     def getSceneName(self):
-        return self.dataout["scene-name"]
+        return self.datain["scene-name"]
 
     def getSources(self):
-        return self.dataout["sources"]
+        return self.datain["sources"]
 
 
 class StudioModeSwitched(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "StudioModeSwitched"
-        self.dataout["new-state"] = None
+        self.datain["new-state"] = None
 
     def getNewState(self):
-        return self.dataout["new-state"]
+        return self.datain["new-state"]
 
 
 class ProfileChanged(base_classes.BaseEvent):
@@ -165,10 +165,10 @@ class StreamStarting(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "StreamStarting"
-        self.dataout["preview-only"] = None
+        self.datain["preview-only"] = None
 
     def getPreviewOnly(self):
-        return self.dataout["preview-only"]
+        return self.datain["preview-only"]
 
 
 class StreamStarted(base_classes.BaseEvent):
@@ -181,10 +181,10 @@ class StreamStopping(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "StreamStopping"
-        self.dataout["preview-only"] = None
+        self.datain["preview-only"] = None
 
     def getPreviewOnly(self):
-        return self.dataout["preview-only"]
+        return self.datain["preview-only"]
 
 
 class StreamStopped(base_classes.BaseEvent):
@@ -221,46 +221,46 @@ class StreamStatus(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "StreamStatus"
-        self.dataout["streaming"] = None
-        self.dataout["recording"] = None
-        self.dataout["preview-only"] = None
-        self.dataout["bytes-per-sec"] = None
-        self.dataout["kbits-per-sec"] = None
-        self.dataout["strain"] = None
-        self.dataout["total-stream-time"] = None
-        self.dataout["num-total-frames"] = None
-        self.dataout["num-dropped-frames"] = None
-        self.dataout["fps"] = None
+        self.datain["streaming"] = None
+        self.datain["recording"] = None
+        self.datain["preview-only"] = None
+        self.datain["bytes-per-sec"] = None
+        self.datain["kbits-per-sec"] = None
+        self.datain["strain"] = None
+        self.datain["total-stream-time"] = None
+        self.datain["num-total-frames"] = None
+        self.datain["num-dropped-frames"] = None
+        self.datain["fps"] = None
 
     def getStreaming(self):
-        return self.dataout["streaming"]
+        return self.datain["streaming"]
 
     def getRecording(self):
-        return self.dataout["recording"]
+        return self.datain["recording"]
 
     def getPreviewOnly(self):
-        return self.dataout["preview-only"]
+        return self.datain["preview-only"]
 
     def getBytesPerSec(self):
-        return self.dataout["bytes-per-sec"]
+        return self.datain["bytes-per-sec"]
 
     def getKbitsPerSec(self):
-        return self.dataout["kbits-per-sec"]
+        return self.datain["kbits-per-sec"]
 
     def getStrain(self):
-        return self.dataout["strain"]
+        return self.datain["strain"]
 
     def getTotalStreamTime(self):
-        return self.dataout["total-stream-time"]
+        return self.datain["total-stream-time"]
 
     def getNumTotalFrames(self):
-        return self.dataout["num-total-frames"]
+        return self.datain["num-total-frames"]
 
     def getNumDroppedFrames(self):
-        return self.dataout["num-dropped-frames"]
+        return self.datain["num-dropped-frames"]
 
     def getFps(self):
-        return self.dataout["fps"]
+        return self.datain["fps"]
 
 
 class Exiting(base_classes.BaseEvent):
