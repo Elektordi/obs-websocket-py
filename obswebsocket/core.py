@@ -72,7 +72,11 @@ class obsws:
             raise exceptions.ConnectionFailure(str(e))
     
     def reconnect(self):
-        # TODO
+        """
+        TODO (Not yet implemented)
+        
+        :return: Nothing
+        """
         raise exceptions.ConnectionFailure("Reconnect not implemented")
             
     def disconnect(self):
@@ -139,9 +143,9 @@ class obsws:
         data["message-id"] = id
         LOG.debug("Sending message id %s: %r"%(id, data))
         self.ws.send(json.dumps(data))
-        return self.waitmessage(id)
+        return self._waitmessage(id)
         
-    def waitmessage(self, id):
+    def _waitmessage(self, id):
         timeout = time.time() + 60 # Timeout = 60s
         while time.time() < timeout:
             if id in self.answers:
