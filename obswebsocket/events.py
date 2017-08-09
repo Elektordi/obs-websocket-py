@@ -123,6 +123,14 @@ class TransitionBegin(base_classes.BaseEvent):
     def __init__(self):
         base_classes.BaseEvent.__init__(self)
         self.name = "TransitionBegin"
+        self.datain["name"] = None
+        self.datain["duration"] = None
+
+    def getName(self):
+        return self.datain["name"]
+
+    def getDuration(self):
+        return self.datain["duration"]
 
 
 class PreviewSceneChanged(base_classes.BaseEvent):

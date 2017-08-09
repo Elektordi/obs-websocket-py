@@ -9,18 +9,18 @@ class GetVersion(base_classes.BaseRequest):
     def __init__(self):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetVersion"
-        self.datain["version"] = None
         self.datain["obs-websocket-version"] = None
         self.datain["obs-studio-version"] = None
-
-    def getVersion(self):
-        return self.datain["version"]
+        self.datain["available-requests"] = None
 
     def getObsWebsocketVersion(self):
         return self.datain["obs-websocket-version"]
 
     def getObsStudioVersion(self):
         return self.datain["obs-studio-version"]
+
+    def getAvailableRequests(self):
+        return self.datain["available-requests"]
 
 
 class GetAuthRequired(base_classes.BaseRequest):
@@ -399,6 +399,14 @@ class SetSceneItemCrop(base_classes.BaseRequest):
         self.dataout["bottom"] = bottom
         self.dataout["left"] = left
         self.dataout["right"] = right
+
+
+class ResetSceneItem(base_classes.BaseRequest):
+    def __init__(self, item, scene_name):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "ResetSceneItem"
+        self.dataout["item"] = item
+        self.dataout["scene-name"] = scene_name
 
 
 class SetCurrentSceneCollection(base_classes.BaseRequest):
