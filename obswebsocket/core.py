@@ -68,7 +68,7 @@ class obsws:
             LOG.info("Connected!")
             self._auth(self.password)
             self._run_threads()
-        except socket.error, e:
+        except socket.error as e:
             raise exceptions.ConnectionFailure(str(e))
     
     def reconnect(self):
@@ -90,7 +90,7 @@ class obsws:
             self.thread_recv.running = False
         try:
             self.ws.close()
-        except socket.error, e:
+        except socket.error as e:
             pass
         
     def _auth(self, password):
@@ -208,7 +208,7 @@ class RecvThread(threading.Thread):
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
-            except (ValueError, exceptions.ObjectError), e:
+            except (ValueError, exceptions.ObjectError) as e:
                 LOG.warning("Invalid message: %r (%s)"%(message, e))
         # end while
         LOG.debug("RecvThread ended.")
