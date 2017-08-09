@@ -190,10 +190,14 @@ class RecvThread(threading.Thread):
             message = ""
             try:
                 message = self.ws.recv()
+                
+                # recv() can return empty string if socket is closed during blocking read (Issue #6)
+                if not message:
+                    continue
+                
                 result = json.loads(message)
                 if 'update-type' in result:
                     LOG.debug("Got message: %r"%(result))
-                    #self.core.eventmanager.trigger(result)
                     obj = self.buildEvent(result)
                     self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
@@ -205,7 +209,7 @@ class RecvThread(threading.Thread):
                 if self.running:
                     self.core.reconnect()
             except (ValueError, exceptions.ObjectError), e:
-                LOG.warning("Invalid message: %s (%s)"%(message, e))
+                LOG.warning("Invalid message: %r (%s)"%(message, e))
         # end while
         LOG.debug("RecvThread ended.")
             
