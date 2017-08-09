@@ -88,10 +88,15 @@ class obsws:
         LOG.info("Disconnecting...")
         if not self.thread_recv is None:
             self.thread_recv.running = False
+
         try:
             self.ws.close()
         except socket.error, e:
             pass
+
+        if not self.thread_recv is None:
+            self.thread_recv.join()
+            self.thread_recv = None
         
     def _auth(self, password):
         auth_payload = {"request-type": "GetAuthRequired", "message-id": str(self.id)}
@@ -115,6 +120,7 @@ class obsws:
         if not self.thread_recv is None:
             self.thread_recv.running = False
         self.thread_recv = RecvThread(self)
+        self.thread_recv.daemon = True
         self.thread_recv.start()
     
     def call(self, obj):
