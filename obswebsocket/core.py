@@ -100,8 +100,8 @@ class obsws:
         result = json.loads(self.ws.recv())
 
         if result['authRequired']:
-            secret = base64.b64encode(hashlib.sha256(password + result['salt']).digest())
-            auth = base64.b64encode(hashlib.sha256(secret + result['challenge']).digest())
+            secret = base64.b64encode(hashlib.sha256((password + result['salt']).encode('utf-8')).digest())
+            auth = base64.b64encode(hashlib.sha256(secret + result['challenge'].encode('utf-8')).digest()).decode('utf-8')
 
             auth_payload = {"request-type": "Authenticate", "message-id": str(self.id), "auth": auth}
             self.id += 1
