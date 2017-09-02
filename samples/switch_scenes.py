@@ -22,11 +22,11 @@ try:
     scenes = ws.call(requests.GetSceneList())
     for s in scenes.getScenes():
         name = s['name']
-        print "Switching to %s"%(name)
+        print("Switching to %s"%(name))
         ws.call(requests.SetCurrentScene(name))
         time.sleep(2)
 
-    print "End of list"
+    print("End of list")
     
 except KeyboardInterrupt:
     pass

@@ -25,7 +25,7 @@ if __name__ == '__main__':
     for l in data.split("\n"):
         if len(l)<3:
             continue
-        #print "< %s"%(l)
+        #print("< %s"%(l))
             
         if l == "### Event Types":
             target = events
@@ -66,7 +66,7 @@ if __name__ == '__main__':
             tvars = [] # Discard following vars                
 
     for datatype, data in [('Event',events),('Request', requests)]:
-        print "%s: %r"%(datatype, data)
+        print("%s: %r"%(datatype, data))
         
         file = open("obswebsocket/%ss.py"%(datatype.lower()),"w") 
          
