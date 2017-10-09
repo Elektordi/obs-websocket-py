@@ -651,4 +651,8 @@ class SetBrowserSourceProperties(base_classes.BaseRequest):
         self.dataout["shutdown"] = shutdown
         self.dataout["render"] = render
 
-
+class SetHeartBeat(base_classes.BaseRequest):
+    def __init__(self, enable):
+        base_classes.BaseRequest.__init__(self)
+        self.name = "SetHeartbeat"
+        self.dataout["enable"] = enable
