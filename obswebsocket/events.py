@@ -224,6 +224,19 @@ class RecordingStopped(base_classes.BaseEvent):
         base_classes.BaseEvent.__init__(self)
         self.name = "RecordingStopped"
 
+class Heartbeat(base_classes.BaseEvent):
+    def __init__(self):
+        base_classes.BaseEvent.__init__(self)
+        self.name = "Heartbeat"
+        self.datain["current-profile"] = None
+        self.datain["current-scene"] = None
+        self.datain["pulse"] = False
+        self.datain["rec-timecode"] = None
+        self.datain["recording"] = None
+        self.datain["streaming"] = None
+        self.datain["total-record-bytes"] = None
+        self.datain["total-record-frames"] = None
+        self.datain["total-record-time"] = None
 
 class StreamStatus(base_classes.BaseEvent):
     def __init__(self):
