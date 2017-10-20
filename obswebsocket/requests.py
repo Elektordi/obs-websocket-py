@@ -80,7 +80,7 @@ class GetSceneList(base_classes.BaseRequest):
 
 
 class SetSourceRender(base_classes.BaseRequest):
-    def __init__(self, source, render, scene_name):
+    def __init__(self, source, render, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSourceRender"
         self.dataout["source"] = source
@@ -112,11 +112,11 @@ class SetPreviewScene(base_classes.BaseRequest):
 
 
 class TransitionToProgram(base_classes.BaseRequest):
-    def __init__(self, with_transition):
+    def __init__(self, name, duration = None, with_transition = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "TransitionToProgram"
-        self.datain["name"] = None
-        self.datain["duration"] = None
+        self.datain["name"] = name
+        self.datain["duration"] = duration
         self.dataout["with-transition"] = with_transition
 
     def getName(self):
@@ -158,7 +158,9 @@ class StartStopRecording(base_classes.BaseRequest):
 
 
 class StartStreaming(base_classes.BaseRequest):
-    def __init__(self, stream, settings, type, metadata, server, key, use_auth, username, password):
+    def __init__(self, stream = None, settings = None, type = None,
+                       metadata = None, server = None, key = None,
+                       use_auth = None, username = None, password = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "StartStreaming"
         self.dataout["stream"] = stream
@@ -369,7 +371,7 @@ class GetSpecialSources(base_classes.BaseRequest):
 
 
 class SetSceneItemPosition(base_classes.BaseRequest):
-    def __init__(self, item, x, y, scene_name):
+    def __init__(self, item, x, y, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemPosition"
         self.dataout["item"] = item
@@ -379,7 +381,7 @@ class SetSceneItemPosition(base_classes.BaseRequest):
 
 
 class SetSceneItemTransform(base_classes.BaseRequest):
-    def __init__(self, item, x_scale, y_scale, rotation, scene_name):
+    def __init__(self, item, x_scale, y_scale, rotation, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemTransform"
         self.dataout["item"] = item
@@ -390,7 +392,7 @@ class SetSceneItemTransform(base_classes.BaseRequest):
 
 
 class SetSceneItemCrop(base_classes.BaseRequest):
-    def __init__(self, item, scene_name, top, bottom, left, right):
+    def __init__(self, item, top, bottom, left, right, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetSceneItemCrop"
         self.dataout["item"] = item
@@ -402,7 +404,7 @@ class SetSceneItemCrop(base_classes.BaseRequest):
 
 
 class ResetSceneItem(base_classes.BaseRequest):
-    def __init__(self, item, scene_name):
+    def __init__(self, item, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "ResetSceneItem"
         self.dataout["item"] = item
@@ -437,16 +439,11 @@ class ListSceneCollections(base_classes.BaseRequest):
 
 
 class SetStreamSettings(base_classes.BaseRequest):
-    def __init__(self, type, settings, save, server, key, use_auth, username, password):
+    def __init__(self, type, settings, save = None, server = None,
+                       key = None, use_auth = None, username = None,
+                       password = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetStreamSettings"
-        self.datain["type"] = None
-        self.datain["settings"] = None
-        self.datain["server"] = None
-        self.datain["key"] = None
-        self.datain["use-auth"] = None
-        self.datain["username"] = None
-        self.datain["password"] = None
         self.dataout["type"] = type
         self.dataout["settings"] = settings
         self.dataout["save"] = save
@@ -506,7 +503,7 @@ class ListProfiles(base_classes.BaseRequest):
 
 
 class GetTextGDIPlusProperties(base_classes.BaseRequest):
-    def __init__(self, source, scene_name):
+    def __init__(self, source, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetTextGDIPlusProperties"
         self.datain["align"] = None
@@ -578,7 +575,11 @@ class GetTextGDIPlusProperties(base_classes.BaseRequest):
 
 
 class SetTextGDIPlusProperties(base_classes.BaseRequest):
-    def __init__(self, source, scene_name, align, chatlog, color, extents, file, font, face, flags, size, style, gradient, outline, text, valign, vertical, render):
+    def __init__(self, source, scene_name = None, align = None, chatlog = None,
+                       color = None, extents = None, file = None, font = None,
+                       face = None, flags = None, size = None, style = None,
+                       gradient = None, outline = None, text = None,
+                       valign = None, vertical = None, render = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetTextGDIPlusProperties"
         self.dataout["source"] = source
@@ -602,7 +603,7 @@ class SetTextGDIPlusProperties(base_classes.BaseRequest):
 
 
 class GetBrowserSourceProperties(base_classes.BaseRequest):
-    def __init__(self, source, scene_name):
+    def __init__(self, source, scene_name = None):
         base_classes.BaseRequest.__init__(self)
         self.name = "GetBrowserSourceProperties"
         self.datain["url"] = None
@@ -638,7 +639,8 @@ class GetBrowserSourceProperties(base_classes.BaseRequest):
 
 
 class SetBrowserSourceProperties(base_classes.BaseRequest):
-    def __init__(self, source, scene_name, url, css, width, height, fps, shutdown, render):
+    def __init__(self, source, scene_name=None, url=None, css=None, width=None,
+                               height=None, fps=None, shutdown=None, render=None):
         base_classes.BaseRequest.__init__(self)
         self.name = "SetBrowserSourceProperties"
         self.dataout["source"] = source
@@ -650,5 +652,3 @@ class SetBrowserSourceProperties(base_classes.BaseRequest):
         self.dataout["fps"] = fps
         self.dataout["shutdown"] = shutdown
         self.dataout["render"] = render
-
-
