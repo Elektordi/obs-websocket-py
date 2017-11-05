@@ -216,6 +216,8 @@ class RecvThread(threading.Thread):
                     self.core.reconnect()
             except (ValueError, exceptions.ObjectError) as e:
                 LOG.warning("Invalid message: %r (%s)"%(message, e))
+            except Exception as error:
+                LOG.warning("Caught error:  %r (%s)"%(message, e))
         # end while
         LOG.debug("RecvThread ended.")
             
