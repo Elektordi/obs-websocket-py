@@ -61,7 +61,7 @@ class obsws:
         if not port is None:
             self.port = port
         
-        while not self.port_is_open(self.host, self.host):
+        while not self.port_is_open():
             time.sleep(0.1)    
         
         try:
