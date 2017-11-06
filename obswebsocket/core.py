@@ -60,7 +60,10 @@ class obsws:
             self.host = host
         if not port is None:
             self.port = port
-            
+        
+        while not self.port_is_open(self.host, self.host):
+            time.sleep(0.1)    
+        
         try:
             self.ws = websocket.WebSocket()
             LOG.info("Connecting...")
@@ -71,13 +74,23 @@ class obsws:
         except socket.error as e:
             raise exceptions.ConnectionFailure(str(e))
     
+    def port_is_open(self):
+        timeout = float(time.time() + 10.0)
+        while float(time.time()) < timeout:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            connection = sock.connect_ex((self.host, self.port))
+            if connection == 0:
+                return True
+        return False
+    
     def reconnect(self):
         """
         TODO (Not yet implemented)
         
         :return: Nothing
         """
-        pass
+        self.disconnect()
+        self.connect(self.host, self.port)
         # raise exceptions.ConnectionFailure("Reconnect not implemented")
             
     def disconnect(self):
