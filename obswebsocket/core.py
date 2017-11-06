@@ -77,7 +77,8 @@ class obsws:
         
         :return: Nothing
         """
-        raise exceptions.ConnectionFailure("Reconnect not implemented")
+        pass
+        # raise exceptions.ConnectionFailure("Reconnect not implemented")
             
     def disconnect(self):
         """
