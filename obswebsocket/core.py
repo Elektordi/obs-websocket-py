@@ -67,7 +67,7 @@ class obsws:
         try:
             self.ws = websocket.WebSocket()
             LOG.info("Connecting...")
-            self.ws.connect("ws://%s:%d"%(self.host, self.port))
+            self.ws.connect("ws://%s:%d"%(self.host, self.port), timeout=10)
             LOG.info("Connected!")
             self._auth(self.password)
             self._run_threads()
