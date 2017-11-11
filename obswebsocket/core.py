@@ -111,7 +111,10 @@ class obsws:
             pass
 
         if not self.thread_recv is None:
-            self.thread_recv.join()
+            try:
+                self.thread_recv.join()
+            except Exception as e:
+                pass
             self.thread_recv = None
         
     def _auth(self, password):
