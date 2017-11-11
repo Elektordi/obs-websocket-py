@@ -90,8 +90,10 @@ class obsws:
         :return: Nothing
         """
         self.disconnect()
-        self.connect(self.host, self.port)
-        # raise exceptions.ConnectionFailure("Reconnect not implemented")
+        if self.port_is_open():
+            self.connect(self.host, self.port)
+        else:
+            raise exceptions.ConnectionFailure("Failed to reconnect to web-socket")
             
     def disconnect(self):
         """
