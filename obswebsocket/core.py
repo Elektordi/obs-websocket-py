@@ -72,7 +72,9 @@ class obsws:
             self._auth(self.password)
             self._run_threads()
         except socket.error as e:
-            raise exceptions.ConnectionFailure(str(e))
+            print e.message
+            # Raising an exception will kill obs! Not what is is ment to do!
+            # raise exceptions.ConnectionFailure(str(e))
     
     def port_is_open(self):
         timeout = float(time.time() + 10.0)
