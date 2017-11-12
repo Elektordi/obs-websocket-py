@@ -60,16 +60,30 @@ class obsws:
             self.host = host
         if not port is None:
             self.port = port
-            
+        
+        while not self.port_is_open():
+            time.sleep(0.1)    
+        
         try:
             self.ws = websocket.WebSocket()
             LOG.info("Connecting...")
-            self.ws.connect("ws://%s:%d"%(self.host, self.port))
+            self.ws.connect("ws://%s:%d"%(self.host, self.port), timeout=10)
             LOG.info("Connected!")
             self._auth(self.password)
             self._run_threads()
         except socket.error as e:
-            raise exceptions.ConnectionFailure(str(e))
+            print e.message
+            # Raising an exception will kill obs! Not what is is ment to do!
+            # raise exceptions.ConnectionFailure(str(e))
+    
+    def port_is_open(self):
+        timeout = float(time.time() + 10.0)
+        while float(time.time()) < timeout:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            connection = sock.connect_ex((self.host, self.port))
+            if connection == 0:
+                return True
+        return False
     
     def reconnect(self):
         """
@@ -77,7 +91,11 @@ class obsws:
         
         :return: Nothing
         """
-        raise exceptions.ConnectionFailure("Reconnect not implemented")
+        self.disconnect()
+        if self.port_is_open():
+            self.connect(self.host, self.port)
+        else:
+            raise exceptions.ConnectionFailure("Failed to reconnect to web-socket")
             
     def disconnect(self):
         """
@@ -95,7 +113,10 @@ class obsws:
             pass
 
         if not self.thread_recv is None:
-            self.thread_recv.join()
+            try:
+                self.thread_recv.join()
+            except Exception as e:
+                pass
             self.thread_recv = None
         
     def _auth(self, password):
@@ -216,6 +237,8 @@ class RecvThread(threading.Thread):
                     self.core.reconnect()
             except (ValueError, exceptions.ObjectError) as e:
                 LOG.warning("Invalid message: %r (%s)"%(message, e))
+            except Exception as e:
+                LOG.warning("Caught error:  %r (%s)"%(message, e))
         # end while
         LOG.debug("RecvThread ended.")
             
