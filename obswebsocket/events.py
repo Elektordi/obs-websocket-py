@@ -5,9 +5,19 @@
 
 from . import base_classes
 
-class SwitchScenes(base_classes.BaseEvent):
+class SwitchScenes(base_classes.Baseevents):
+    """Indicates a scene change.
+
+    :Returns:
+       *scene_name*
+            type: String
+            The new scene.
+       *sources*
+            type: Array
+            List of sources in the new scene.
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "SwitchScenes"
         self.datain["scene-name"] = None
         self.datain["sources"] = None
@@ -19,83 +29,44 @@ class SwitchScenes(base_classes.BaseEvent):
         return self.datain["sources"]
 
 
-class ScenesChanged(base_classes.BaseEvent):
+class ScenesChanged(base_classes.Baseevents):
+    """The scene list has been modified.
+Scenes have been added, removed, or renamed.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "ScenesChanged"
 
 
-class SourceOrderChanged(base_classes.BaseEvent):
+class SceneCollectionChanged(base_classes.Baseevents):
+    """Triggered when switching to another scene collection or when renaming the current scene collection.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "SourceOrderChanged"
-        self.datain["scene-name"] = None
-
-    def getSceneName(self):
-        return self.datain["scene-name"]
-
-
-class SceneItemAdded(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "SceneItemAdded"
-        self.datain["scene-name"] = None
-        self.datain["item-name"] = None
-
-    def getSceneName(self):
-        return self.datain["scene-name"]
-
-    def getItemName(self):
-        return self.datain["item-name"]
-
-
-class SceneItemRemoved(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "SceneItemRemoved"
-        self.datain["scene-name"] = None
-        self.datain["item-name"] = None
-
-    def getSceneName(self):
-        return self.datain["scene-name"]
-
-    def getItemName(self):
-        return self.datain["item-name"]
-
-
-class SceneItemVisibilityChanged(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "SceneItemVisibilityChanged"
-        self.datain["scene-name"] = None
-        self.datain["item-name"] = None
-        self.datain["item-visible"] = None
-
-    def getSceneName(self):
-        return self.datain["scene-name"]
-
-    def getItemName(self):
-        return self.datain["item-name"]
-
-    def getItemVisible(self):
-        return self.datain["item-visible"]
-
-
-class SceneCollectionChanged(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "SceneCollectionChanged"
 
 
-class SceneCollectionListChanged(base_classes.BaseEvent):
+class SceneCollectionListChanged(base_classes.Baseevents):
+    """Triggered when a scene collection is created, added, renamed, or removed.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "SceneCollectionListChanged"
 
 
-class SwitchTransition(base_classes.BaseEvent):
+class SwitchTransition(base_classes.Baseevents):
+    """The active transition has been changed.
+
+    :Returns:
+       *transition_name*
+            type: String
+            The name of the new active transition.
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "SwitchTransition"
         self.datain["transition-name"] = None
 
@@ -103,9 +74,26 @@ class SwitchTransition(base_classes.BaseEvent):
         return self.datain["transition-name"]
 
 
-class TransitionDurationChanged(base_classes.BaseEvent):
+class TransitionListChanged(base_classes.Baseevents):
+    """The list of available transitions has been modified.
+Transitions have been added, removed, or renamed.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
+        self.name = "TransitionListChanged"
+
+
+class TransitionDurationChanged(base_classes.Baseevents):
+    """The active transition duration has been changed.
+
+    :Returns:
+       *new_duration*
+            type: int
+            New transition duration.
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
         self.name = "TransitionDurationChanged"
         self.datain["new-duration"] = None
 
@@ -113,15 +101,19 @@ class TransitionDurationChanged(base_classes.BaseEvent):
         return self.datain["new-duration"]
 
 
-class TransitionListChanged(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "TransitionListChanged"
+class TransitionBegin(base_classes.Baseevents):
+    """A transition (other than "cut") has begun.
 
-
-class TransitionBegin(base_classes.BaseEvent):
+    :Returns:
+       *name*
+            type: String
+            Transition name.
+       *duration*
+            type: int
+            Transition duration (in milliseconds).
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "TransitionBegin"
         self.datain["name"] = None
         self.datain["duration"] = None
@@ -133,45 +125,34 @@ class TransitionBegin(base_classes.BaseEvent):
         return self.datain["duration"]
 
 
-class PreviewSceneChanged(base_classes.BaseEvent):
+class ProfileChanged(base_classes.Baseevents):
+    """Triggered when switching to another profile or when renaming the current profile.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "PreviewSceneChanged"
-        self.datain["scene-name"] = None
-        self.datain["sources"] = None
-
-    def getSceneName(self):
-        return self.datain["scene-name"]
-
-    def getSources(self):
-        return self.datain["sources"]
-
-
-class StudioModeSwitched(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "StudioModeSwitched"
-        self.datain["new-state"] = None
-
-    def getNewState(self):
-        return self.datain["new-state"]
-
-
-class ProfileChanged(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "ProfileChanged"
 
 
-class ProfileListChanged(base_classes.BaseEvent):
+class ProfileListChanged(base_classes.Baseevents):
+    """Triggered when a profile is created, added, renamed, or removed.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "ProfileListChanged"
 
 
-class StreamStarting(base_classes.BaseEvent):
+class StreamStarting(base_classes.Baseevents):
+    """A request to start streaming has been issued.
+
+    :Returns:
+       *preview_only*
+            type: boolean
+            Always false (retrocompatibility).
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "StreamStarting"
         self.datain["preview-only"] = None
 
@@ -179,15 +160,25 @@ class StreamStarting(base_classes.BaseEvent):
         return self.datain["preview-only"]
 
 
-class StreamStarted(base_classes.BaseEvent):
+class StreamStarted(base_classes.Baseevents):
+    """Streaming started successfully.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "StreamStarted"
 
 
-class StreamStopping(base_classes.BaseEvent):
+class StreamStopping(base_classes.Baseevents):
+    """A request to stop streaming has been issued.
+
+    :Returns:
+       *preview_only*
+            type: boolean
+            Always false (retrocompatibility).
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "StreamStopping"
         self.datain["preview-only"] = None
 
@@ -195,39 +186,52 @@ class StreamStopping(base_classes.BaseEvent):
         return self.datain["preview-only"]
 
 
-class StreamStopped(base_classes.BaseEvent):
+class StreamStopped(base_classes.Baseevents):
+    """Streaming stopped successfully.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "StreamStopped"
 
 
-class RecordingStarting(base_classes.BaseEvent):
+class StreamStatus(base_classes.Baseevents):
+    """Emit every 2 seconds.
+
+    :Returns:
+       *streaming*
+            type: boolean
+            Current streaming state.
+       *recording*
+            type: boolean
+            Current recording state.
+       *preview_only*
+            type: boolean
+            Always false (retrocompatibility).
+       *bytes_per_sec*
+            type: int
+            Amount of data per second (in bytes) transmitted by the stream encoder.
+       *kbits_per_sec*
+            type: int
+            Amount of data per second (in kilobits) transmitted by the stream encoder.
+       *strain*
+            type: double
+            Percentage of dropped frames.
+       *total_stream_time*
+            type: int
+            Total time (in seconds) since the stream started.
+       *num_total_frames*
+            type: int
+            Total number of frames transmitted since the stream started.
+       *num_dropped_frames*
+            type: int
+            Number of frames dropped by the encoder since the stream started.
+       *fps*
+            type: double
+            Current framerate.
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "RecordingStarting"
-
-
-class RecordingStarted(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "RecordingStarted"
-
-
-class RecordingStopping(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "RecordingStopping"
-
-
-class RecordingStopped(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
-        self.name = "RecordingStopped"
-
-
-class StreamStatus(base_classes.BaseEvent):
-    def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
         self.name = "StreamStatus"
         self.datain["streaming"] = None
         self.datain["recording"] = None
@@ -271,9 +275,221 @@ class StreamStatus(base_classes.BaseEvent):
         return self.datain["fps"]
 
 
-class Exiting(base_classes.BaseEvent):
+class RecordingStarting(base_classes.Baseevents):
+    """A request to start recording has been issued.
+
+    """
     def __init__(self):
-        base_classes.BaseEvent.__init__(self)
+        base_classes.Baseevents.__init__(self)
+        self.name = "RecordingStarting"
+
+
+class RecordingStarted(base_classes.Baseevents):
+    """Recording started successfully.
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "RecordingStarted"
+
+
+class RecordingStopping(base_classes.Baseevents):
+    """A request to stop recording has been issued.
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "RecordingStopping"
+
+
+class RecordingStopped(base_classes.Baseevents):
+    """Recording stopped successfully.
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "RecordingStopped"
+
+
+class ReplayStarting(base_classes.Baseevents):
+    """A request to start the replay buffer has been issued.
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "ReplayStarting"
+
+
+class ReplayStarted(base_classes.Baseevents):
+    """Replay Buffer started successfully
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "ReplayStarted"
+
+
+class ReplayStopping(base_classes.Baseevents):
+    """A request to start the replay buffer has been issued.
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "ReplayStopping"
+
+
+class ReplayStopped(base_classes.Baseevents):
+    """Replay Buffer stopped successfully
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "ReplayStopped"
+
+
+class Exiting(base_classes.Baseevents):
+    """OBS is exiting.
+
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
         self.name = "Exiting"
+
+
+class SourceOrderChanged(base_classes.Baseevents):
+    """Scene items have been reordered.
+
+    :Returns:
+       *scene_name*
+            type: String
+            Name of the scene where items have been reordered.
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "SourceOrderChanged"
+        self.datain["scene-name"] = None
+
+    def getSceneName(self):
+        return self.datain["scene-name"]
+
+
+class SceneItemAdded(base_classes.Baseevents):
+    """An item has been added to the current scene.
+
+    :Returns:
+       *scene_name*
+            type: String
+            Name of the scene.
+       *item_name*
+            type: String
+            Name of the item added to the scene.
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "SceneItemAdded"
+        self.datain["scene-name"] = None
+        self.datain["item-name"] = None
+
+    def getSceneName(self):
+        return self.datain["scene-name"]
+
+    def getItemName(self):
+        return self.datain["item-name"]
+
+
+class SceneItemRemoved(base_classes.Baseevents):
+    """An item has been removed from the current scene.
+
+    :Returns:
+       *scene_name*
+            type: String
+            Name of the scene.
+       *item_name*
+            type: String
+            Name of the item removed from the scene.
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "SceneItemRemoved"
+        self.datain["scene-name"] = None
+        self.datain["item-name"] = None
+
+    def getSceneName(self):
+        return self.datain["scene-name"]
+
+    def getItemName(self):
+        return self.datain["item-name"]
+
+
+class SceneItemVisibilityChanged(base_classes.Baseevents):
+    """An item's visibility has been toggled.
+
+    :Returns:
+       *scene_name*
+            type: String
+            Name of the scene.
+       *item_name*
+            type: String
+            Name of the item in the scene.
+       *item_visible*
+            type: boolean
+            New visibility state of the item.
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "SceneItemVisibilityChanged"
+        self.datain["scene-name"] = None
+        self.datain["item-name"] = None
+        self.datain["item-visible"] = None
+
+    def getSceneName(self):
+        return self.datain["scene-name"]
+
+    def getItemName(self):
+        return self.datain["item-name"]
+
+    def getItemVisible(self):
+        return self.datain["item-visible"]
+
+
+class PreviewSceneChanged(base_classes.Baseevents):
+    """The selected preview scene has changed (only available in Studio Mode).
+
+    :Returns:
+       *scene_name*
+            type: String
+            Name of the scene being previewed.
+       *sources*
+            type: Source|Array
+            List of sources composing the scene. Same specification as [`GetCurrentScene`](#getcurrentscene).
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "PreviewSceneChanged"
+        self.datain["scene-name"] = None
+        self.datain["sources"] = None
+
+    def getSceneName(self):
+        return self.datain["scene-name"]
+
+    def getSources(self):
+        return self.datain["sources"]
+
+
+class StudioModeSwitched(base_classes.Baseevents):
+    """Studio Mode has been enabled or disabled.
+
+    :Returns:
+       *new_state*
+            type: boolean
+            The new enabled state of Studio Mode.
+    """
+    def __init__(self):
+        base_classes.Baseevents.__init__(self)
+        self.name = "StudioModeSwitched"
+        self.datain["new-state"] = None
+
+    def getNewState(self):
+        return self.datain["new-state"]
 
 

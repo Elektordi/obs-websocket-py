@@ -6,6 +6,6 @@ class ConnectionFailure(Exception):
 
 class MessageTimeout(Exception):
     pass
-    
+
 class ObjectError(Exception):
     pass
