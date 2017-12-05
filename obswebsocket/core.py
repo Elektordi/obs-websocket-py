@@ -64,7 +64,7 @@ class obsws:
         try:
             self.ws = websocket.WebSocket()
             LOG.info("Connecting...")
-            self.ws.connect("ws://%s:%d"%(self.host, self.port))
+            self.ws.connect("ws://{}:{}".format(self.host, self.port))
             LOG.info("Connected!")
             self._auth(self.password)
             self._run_threads()
@@ -147,7 +147,7 @@ class obsws:
         id = str(self.id)
         self.id += 1
         data["message-id"] = id
-        LOG.debug("Sending message id %s: %r"%(id, data))
+        LOG.debug("Sending message id {}: {}".format(id, data))
         self.ws.send(json.dumps(data))
         return self._waitmessage(id)
 
@@ -157,7 +157,7 @@ class obsws:
             if id in self.answers:
                 return self.answers.pop(id)
             time.sleep(0.1)
-        raise exceptions.MessageTimeout("No answer for message %s"%(id))
+        raise exceptions.MessageTimeout("No answer for message {}".format(id))
 
     def register(self, function, event = None):
         """
@@ -203,19 +203,19 @@ class RecvThread(threading.Thread):
 
                 result = json.loads(message)
                 if 'update-type' in result:
-                    LOG.debug("Got message: %r"%(result))
+                    LOG.debug("Got message: {}".format(result))
                     obj = self.buildEvent(result)
                     self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
-                    LOG.debug("Got answer for id %s: %r"%(result['message-id'], result))
+                    LOG.debug("Got answer for id {}: {}".format(result['message-id'], result))
                     self.core.answers[result['message-id']] = result
                 else:
-                    LOG.warning("Unknow message: %r"%(result))
+                    LOG.warning("Unknow message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
             except (ValueError, exceptions.ObjectError) as e:
-                LOG.warning("Invalid message: %r (%s)"%(message, e))
+                LOG.warning("Invalid message: {} ({})".format(message, e))
         # end while
         LOG.debug("RecvThread ended.")
 
@@ -224,7 +224,7 @@ class RecvThread(threading.Thread):
         try:
             obj = getattr(events, name)()
         except AttributeError:
-            raise exceptions.ObjectError("Invalid event %s"%(name))
+            raise exceptions.ObjectError("Invalid event {}".format(name))
         obj.input(data)
         return obj
 
