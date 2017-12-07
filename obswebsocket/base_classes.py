@@ -14,7 +14,7 @@ class Baseevents:
         self.datain = r
 
     def __repr__(self):
-        return "<%s event (%r)>"%(self.name, self.datain)
+        return "<{} event ({})>".format(self.name, self.datain)
 
 
 class Baserequests:
@@ -38,8 +38,8 @@ class Baserequests:
 
     def __repr__(self):
         if self.status is None:
-            return "<%s request (%r) waiting>"%(self.name, self.dataout)
+            return "<{} request ({}) waiting>".format(self.name, self.dataout)
         elif self.status:
-            return "<%s request (%r) called: success (%r)>"%(self.name, self.dataout, self.datain)
+            return "<{} request ({}) called: success ({})>".format(self.name, self.dataout, self.datain)
         else:
-            return "<%s request (%r) called: failed (%r)>"%(self.name, self.dataout, self.datain)
+            return "<{} request ({}) called: failed ({})>".format(self.name, self.dataout, self.datain)
