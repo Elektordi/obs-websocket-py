@@ -100,3 +100,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+#generated files
+obswebsocket/events.py
+obswebsocket/requests.py
