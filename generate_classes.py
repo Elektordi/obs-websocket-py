@@ -17,7 +17,7 @@ def toPyVar(string):
 
 def generate_classes():
     """Generates the necessary classes."""
-    data = json.loads(six.moves.urllib.request.urlopen(import_url).read())
+    data = json.loads(six.moves.urllib.request.urlopen(import_url).read().decode('utf-8'))
 
     for event in data:
         with open("obswebsocket/{}.py".format(event),"w") as file:
