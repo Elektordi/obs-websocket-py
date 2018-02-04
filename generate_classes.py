@@ -5,6 +5,8 @@ import six
 import six.moves.urllib.request
 import json
 
+import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/master/docs/generated/comments.json"
+
 def toPyVar(string):
     """Converts a string to a suitable variable name by removing not allowed characters."""
     for ch in ["-",".","*"]:
@@ -13,9 +15,9 @@ def toPyVar(string):
     return string
 
 
-def generate_classes(url):
+def generate_classes():
     """Generates the necessary classes."""
-    data = json.loads(six.moves.urllib.request.urlopen(url).read())
+    data = json.loads(six.moves.urllib.request.urlopen(import_url).read())
 
     for event in data:
         with open("obswebsocket/{}.py".format(event),"w") as file:
@@ -82,3 +84,6 @@ def generate_classes(url):
                         file.write("        return self.datain[\"{}\"]\n".format(r))
                         file.write("\n")
                     file.write("\n")
+                    
+if __name__ == "__main__":
+    generate_classes()

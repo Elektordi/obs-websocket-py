@@ -20,17 +20,15 @@ except:
 
 # Generate classes
 class CustomInstallCommand(install):
-    """Customized setuptools install command - prints a friendly greeting."""
     def run(self):
-        print("generate classes")
-        import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/4.3.0/docs/generated/comments.json"
-        generate_classes(import_url)
+        print("Generating API classes...")
+        generate_classes()
         install.run(self)
 
 setup(
   name = 'obs-websocket-py',
   packages = ['obswebsocket'],
-  cmdclass={'install': CustomInstallCommand},
+  cmdclass = {'install': CustomInstallCommand},
   license = 'MIT',
   version = __version__,
   description = 'Python library to communicate with an obs-websocket server.',
@@ -38,7 +36,7 @@ setup(
   author = 'Guillaume "Elektordi" Genty',
   author_email = 'elektordi@elektordi.net',
   url = 'https://github.com/Elektordi/obs-websocket-py',
-  download_url = 'https://github.com/Elektordi/obs-websocket-py/archive/0.2.tar.gz',
+  download_url = 'https://github.com/Elektordi/obs-websocket-py/archive/0.3.tar.gz',
   keywords = ['obs', 'obs-studio', 'websocket'],
   classifiers = [
     'License :: OSI Approved :: MIT License',
