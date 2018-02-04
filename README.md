@@ -1,8 +1,6 @@
 # obs-websocket-py
 Python library to communicate with an [obs-websocket](https://github.com/Palakis/obs-websocket) server.
 
-Current version: BETA 0.2
-
 _Licensed under the MIT License_
 
 ## Project pages
