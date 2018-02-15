@@ -4,10 +4,13 @@
 from __future__ import print_function
 
 from distutils.core import setup
+import os
 from setuptools.command.install import install
+import sys
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from generate_classes import generate_classes
-from obswebsocket import __version__
+from obswebsocket.version import __version__
 
 # Convert README from Markdown to reStructuredText
 description = open('README.md', 'r').read()
