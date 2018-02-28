@@ -6,8 +6,6 @@ from __future__ import print_function
 from setuptools import setup
 from setuptools.command.install import install
 
-from obswebsocket import __version__
-
 # Convert README from Markdown to reStructuredText
 description = open('README.md', 'r').read()
 try:
@@ -30,7 +28,7 @@ setup(
   packages = ['obswebsocket'],
   cmdclass = {'install': CustomInstallCommand},
   license = 'MIT',
-  version = __version__,
+  version = '0.3',
   description = 'Python library to communicate with an obs-websocket server.',
   long_description = description,
   author = 'Guillaume "Elektordi" Genty',
