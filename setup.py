@@ -3,10 +3,9 @@
 
 from __future__ import print_function
 
-from distutils.core import setup
+from setuptools import setup
 from setuptools.command.install import install
 
-from generate_classes import generate_classes
 from obswebsocket import __version__
 
 # Convert README from Markdown to reStructuredText
@@ -22,6 +21,7 @@ except:
 class CustomInstallCommand(install):
     def run(self):
         print("Generating API classes...")
+        from generate_classes import generate_classes
         generate_classes()
         install.run(self)
 
@@ -51,5 +51,6 @@ setup(
     'Programming Language :: Python :: 3',
   ],
 
+  setup_requires=['six'],
   install_requires=['websocket-client'],
 )
