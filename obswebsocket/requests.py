@@ -497,6 +497,26 @@ class ListProfiles(base_classes.Baserequests):
         return self.datain["profiles"]
 
 
+class GetSourceSettings(base_classes.Baserequests):
+    def __init__(self, source, source_type):
+        base_classes.Baserequests.__init__(self)
+        self.name = "GetSourceSettings"
+        self.datain["sourceSettings"] = None
+        self.dataout["sourceName"] = source
+        self.dataout["sourceType"] = source_type
+    
+    def getSettings(self):
+        return self.datain['sourceSettings']
+
+class SetSourceSettings(base_classes.Baserequests):
+    def __init__(self, source, source_type, settings):
+        base_classes.Baserequests.__init__(self)
+        self.name = "SetSourceSettings"
+        self.dataout["sourceName"] = source
+        self.dataout["sourceType"] = source_type
+        self.dataout['sourceSettings'] = settings
+
+
 class GetTextGDIPlusProperties(base_classes.Baserequests):
     def __init__(self, source, scene_name):
         base_classes.Baserequests.__init__(self)
