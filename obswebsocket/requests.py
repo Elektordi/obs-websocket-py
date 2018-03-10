@@ -593,6 +593,93 @@ class SetTextGDIPlusProperties(base_classes.Baserequests):
         self.dataout["render"] = render
 
 
+class GetTextFreetype2Properties(base_classes.Baserequests):
+    def __init__(self, source, scene_name):
+        base_classes.Baserequests.__init__(self)
+        self.name = "GetTextFreetype2Properties"
+        self.datain["color1"] = None
+        self.datain["color2"] = None
+        self.datain["custom_width"] = None
+        self.datain["drop_shadow"] = None
+        self.datain["font"] = {'face': None, 'flags': None, 'size': None, 'style': None}
+        self.datain["from_file"] = None
+        self.datain["log_mode"] = None
+        self.datain["outline"] = None
+        self.datain["text"] = None
+        self.datain["text_file"] = None
+        self.datain["word_wrap"] = None
+        self.datain["render"] = None
+        self.dataout["source"] = source
+        self.dataout["scene-name"] = scene_name
+
+    def getColor1(self):
+        return self.datain["color1"]
+        
+    def getColor2(self):
+        return self.datain["color2"]
+        
+    def getCustomwidth(self):
+        return self.datain["custom_width"]
+        
+    def getDropshadow(self):
+        return self.datain["drop_shadow"]
+        
+    def getFont(self):
+        return self.datain["font"]
+        
+    def getFace(self):
+        return self.datain["font"]["face"]
+        
+    def getFlags(self):
+        return self.datain["font"]["flags"]
+        
+    def getSize(self):
+        return self.datain["font"]["size"]
+        
+    def getStyle(self):
+        return self.datain["font"]["style"]
+        
+    def getFromfile(self):
+        return self.datain["from_file"]
+        
+    def getLogmode(self):
+        return self.datain["log_mode"]
+        
+    def getOutline(self):
+        return self.datain["outline"]
+        
+    def getText(self):
+        return self.datain["text"]
+        
+    def getTextfile(self):
+        return self.datain["text_file"]
+        
+    def getWordwrap(self):
+        return self.datain["word_wrap"]
+        
+    def getRender(self):
+        return self.datain["render"]
+
+
+class SetTextFreetype2Properties(base_classes.Baserequests):
+    def __init__(self, source, scene_name, color1, color2, custom_width, drop_shadow, font, from_file, log_mode, outline, text, text_file, word_wrap, render):
+        base_classes.Baserequests.__init__(self)
+        self.name = "SetTextFreetype2Properties"
+        self.dataout["color1"] = color1
+        self.dataout["color2"] = color2
+        self.dataout["custom_width"] = custom_width
+        self.dataout["drop_shadow"] = drop_shadow
+        self.dataout["font"] = font
+        self.dataout["from_file"] = from_file
+        self.dataout["log_mode"] = log_mode
+        self.dataout["outline"] = outline
+        self.dataout["text"] = text
+        self.dataout["text_file"] = text_file
+        self.dataout["word_wrap"] = word_wrap
+        self.dataout["render"] = render
+        self.dataout["source"] = source
+        self.dataout["scene-name"] = scene_name
+
 class GetBrowserSourceProperties(base_classes.Baserequests):
     def __init__(self, source, scene_name):
         base_classes.Baserequests.__init__(self)
@@ -642,4 +729,5 @@ class SetBrowserSourceProperties(base_classes.Baserequests):
         self.dataout["fps"] = fps
         self.dataout["shutdown"] = shutdown
         self.dataout["render"] = render
+
 
