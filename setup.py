@@ -6,6 +6,10 @@ from __future__ import print_function
 from distutils.core import setup
 from setuptools.command.install import install
 
+from os.path import dirname
+from sys import path
+path.append(dirname(__file__))
+
 from generate_classes import generate_classes
 from obswebsocket import __version__
 
