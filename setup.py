@@ -4,7 +4,7 @@
 from __future__ import print_function
 
 from setuptools import setup
-from setuptools.command.install import install
+from distutils.command.build import build
 
 # Convert README from Markdown to reStructuredText
 description = open('README.md', 'r').read()
@@ -16,17 +16,17 @@ except:
 # If not possible, leave it in Markdown...
 
 # Generate classes
-class CustomInstallCommand(install):
+class CustomBuildCommand(build):
     def run(self):
         print("Generating API classes...")
         from generate_classes import generate_classes
         generate_classes()
-        install.run(self)
+        build.run(self)
 
 setup(
   name = 'obs-websocket-py',
   packages = ['obswebsocket'],
-  cmdclass = {'install': CustomInstallCommand},
+  cmdclass = {'build': CustomBuildCommand},
   license = 'MIT',
   version = '0.3',
   description = 'Python library to communicate with an obs-websocket server.',
