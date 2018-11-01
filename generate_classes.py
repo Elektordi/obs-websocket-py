@@ -17,7 +17,9 @@ def toPyVar(string):
 
 def generate_classes():
     """Generates the necessary classes."""
+    print("Downloading %s for last API version."%(import_url))
     data = json.loads(six.moves.urllib.request.urlopen(import_url).read().decode('utf-8'))
+    print("Download OK. Generating python files...")
 
     for event in data:
         with open("obswebsocket/{}.py".format(event),"w") as file:
@@ -85,5 +87,7 @@ def generate_classes():
                         file.write("\n")
                     file.write("\n")
                     
+    print("API classes have been generated.")
+
 if __name__ == "__main__":
     generate_classes()

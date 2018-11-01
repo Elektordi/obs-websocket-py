@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from __future__ import print_function
+
+version = "0.3"
 
 from distutils.core import setup
 from setuptools.command.install import install
 
 from generate_classes import generate_classes
-from obswebsocket import __version__
 
 # Convert README from Markdown to reStructuredText
 description = open('README.md', 'r').read()
@@ -21,7 +21,6 @@ except:
 # Generate classes
 class CustomInstallCommand(install):
     def run(self):
-        print("Generating API classes...")
         generate_classes()
         install.run(self)
 
@@ -30,13 +29,13 @@ setup(
   packages = ['obswebsocket'],
   cmdclass = {'install': CustomInstallCommand},
   license = 'MIT',
-  version = __version__,
+  version = version,
   description = 'Python library to communicate with an obs-websocket server.',
   long_description = description,
   author = 'Guillaume "Elektordi" Genty',
   author_email = 'elektordi@elektordi.net',
   url = 'https://github.com/Elektordi/obs-websocket-py',
-  download_url = 'https://github.com/Elektordi/obs-websocket-py/archive/%s.tar.gz'%(__version__),
+  download_url = 'https://github.com/Elektordi/obs-websocket-py/archive/%s.tar.gz'%(version),
   keywords = ['obs', 'obs-studio', 'websocket'],
   classifiers = [
     'License :: OSI Approved :: MIT License',
