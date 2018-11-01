@@ -36,7 +36,7 @@ setup(
   author = 'Guillaume "Elektordi" Genty',
   author_email = 'elektordi@elektordi.net',
   url = 'https://github.com/Elektordi/obs-websocket-py',
-  download_url = 'https://github.com/Elektordi/obs-websocket-py/archive/0.3.tar.gz',
+  download_url = 'https://github.com/Elektordi/obs-websocket-py/archive/%s.tar.gz'%(__version__),
   keywords = ['obs', 'obs-studio', 'websocket'],
   classifiers = [
     'License :: OSI Approved :: MIT License',
@@ -49,6 +49,7 @@ setup(
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.5',
   ],
 
   install_requires=['websocket-client'],
