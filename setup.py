@@ -5,7 +5,7 @@ from __future__ import print_function
 version = "0.3"
 
 from distutils.core import setup
-from setuptools.command.install import install
+from setuptools.command.sdist import sdist
 
 from generate_classes import generate_classes
 
@@ -19,15 +19,15 @@ except:
 # If not possible, leave it in Markdown...
 
 # Generate classes
-class CustomInstallCommand(install):
+class updateClasses(sdist):
     def run(self):
         generate_classes()
-        install.run(self)
+        sdist.run(self)
 
 setup(
   name = 'obs-websocket-py',
   packages = ['obswebsocket'],
-  cmdclass = {'install': CustomInstallCommand},
+  cmdclass = {'sdist': updateClasses},
   license = 'MIT',
   version = version,
   description = 'Python library to communicate with an obs-websocket server.',
