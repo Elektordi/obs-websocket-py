@@ -32,7 +32,7 @@ class obsws:
     For advanced usage, including events callback, see the 'samples' directory.
     """
 
-    def __init__(self, host = None, port = 4444, password = ''):
+    def __init__(self, host = 'localhost', port = 4444, password = ''):
         """
         Construct a new obsws wrapper
 
@@ -104,7 +104,10 @@ class obsws:
         self.ws.send(json.dumps(auth_payload))
         result = json.loads(self.ws.recv())
 
-        if result['authRequired']:
+        if result['status'] != 'ok':
+            raise exceptions.ConnectionFailure(result['error'])
+            
+        if result.get('authRequired'):
             secret = base64.b64encode(hashlib.sha256((password + result['salt']).encode('utf-8')).digest())
             auth = base64.b64encode(hashlib.sha256(secret + result['challenge'].encode('utf-8')).digest()).decode('utf-8')
 

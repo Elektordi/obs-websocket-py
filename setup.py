@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-version = "0.3"
+version = "0.4"
 
 from distutils.core import setup
 from setuptools.command.sdist import sdist
 
-from generate_classes import generate_classes
-
 # Convert README from Markdown to reStructuredText
-description = open('README.md', 'r').read()
+description = "Please take a look at README.md"
 try:
+    description = open('README.md', 'r').read()
     import pypandoc
     description = pypandoc.convert_text(description, 'rst', 'markdown_github')
 except:
@@ -21,6 +20,10 @@ except:
 # Generate classes
 class updateClasses(sdist):
     def run(self):
+        from os.path import dirname
+        from sys import path
+        path.append(dirname(__file__))
+        from generate_classes import generate_classes
         generate_classes()
         sdist.run(self)
 
