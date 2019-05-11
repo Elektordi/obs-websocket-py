@@ -73,11 +73,16 @@ class obsws:
 
     def reconnect(self):
         """
-        TODO (Not yet implemented)
+        Restart the connection to the websocket server
 
         :return: Nothing
         """
-        raise exceptions.ConnectionFailure("Reconnect not implemented")
+        try:
+            self.disconnect()
+        except Exception:
+            # TODO: Need to catch more precise exception
+            pass
+        self.connect()
 
     def disconnect(self):
         """
