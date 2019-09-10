@@ -6,10 +6,10 @@ import six.moves.urllib.request
 import json
 import datetime
 
-github_user = "Palakis"
-github_repo = "obs-websocket"
-github_branch = "master"
-github_path = "docs/generated/comments.json"
+github_user = 'Palakis'
+github_repo = 'obs-websocket'
+github_branch = 'master'
+github_path = 'docs/generated/comments.json'
 
 
 def clean_var(string):
@@ -17,24 +17,24 @@ def clean_var(string):
     Converts a string to a suitable variable name by removing not allowed
     characters.
     """
-    for ch in ["-", ".", "*"]:
-            string = string.replace(ch, "_")
-    string = string.replace("[]", "")
+    for ch in ['-', '.', '*']:
+            string = string.replace(ch, '_')
+    string = string.replace('[]', '')
     return string
 
 
 def generate_classes():
     """Generates the necessary classes."""
-    import_url = "https://raw.githubusercontent.com/{}/{}/{}/{}".format(
+    import_url = 'https://raw.githubusercontent.com/{}/{}/{}/{}'.format(
         github_user, github_repo, github_branch, github_path)
     print("Downloading {} for last API version.".format(import_url))
     data = json.loads(six.moves.urllib.request.urlopen(import_url).read().decode('utf-8'))
     print("Download OK. Generating python files...")
 
-    for event in ["requests","events"]:
+    for event in ['requests','events']:
         if not event in data:
             raise Exception("Missing {} in data.".format(event))
-        with open("obswebsocket/{}.py".format(event),"w") as file:
+        with open('obswebsocket/{}.py'.format(event),'w') as file:
 
             file.write("#!/usr/bin/env python\n")
             file.write("# -*- coding: utf-8 -*-\n")
@@ -46,34 +46,34 @@ def generate_classes():
             file.write("\n")
             for sec in data[event]:
                 for i in data[event][sec]:
-                    file.write("class {}(base_classes.Base{}):\n".format(i["name"], event))
-                    file.write("    \"\"\"{}\n\n".format(i["description"]))
+                    file.write("class {}(base_classes.Base{}):\n".format(i['name'], event))
+                    file.write("    \"\"\"{}\n\n".format(i['description']))
 
                     arguments_default = []
                     arguments = []
                     try:
-                        if len(i["params"]) > 0:
+                        if len(i['params']) > 0:
                             file.write("    :Arguments:\n")
-                            for a in i["params"]:
-                                file.write("       *{}*\n".format(clean_var(a["name"])))
-                                file.write("            type: {}\n".format(a["type"]))
-                                file.write("            {}\n".format(a["description"]))
-                                if "optional" in a["type"]:
-                                    arguments_default.append(a["name"])
+                            for a in i['params']:
+                                file.write("       *{}*\n".format(clean_var(a['name'])))
+                                file.write("            type: {}\n".format(a['type']))
+                                file.write("            {}\n".format(a['description']))
+                                if 'optional' in a['type']:
+                                    arguments_default.append(a['name'])
                                 else:
-                                    arguments.append(a["name"])
+                                    arguments.append(a['name'])
                     except KeyError:
                         pass
 
                     returns = []
                     try:
-                        if len(i["returns"]) > 0:
+                        if len(i['returns']) > 0:
                             file.write("    :Returns:\n")
-                            for r in i["returns"]:
-                                file.write("       *{}*\n".format(clean_var(r["name"])))
-                                file.write("            type: {}\n".format(r["type"]))
-                                file.write("            {}\n".format(r["description"]))
-                                returns.append(r["name"])
+                            for r in i['returns']:
+                                file.write("       *{}*\n".format(clean_var(r['name'])))
+                                file.write("            type: {}\n".format(r['type']))
+                                file.write("            {}\n".format(r['description']))
+                                returns.append(r['name'])
                     except KeyError:
                         pass
 
@@ -85,22 +85,23 @@ def generate_classes():
                                 )
                     )
                     file.write("        base_classes.Base{}.__init__(self)\n".format(event))
-                    file.write("        self.name = \"{}\"\n".format(i["name"]))
+                    file.write("        self.name = '{}'\n".format(i['name']))
                     for r in returns:
-                        file.write("        self.datain[\"{}\"] = None\n".format(r))
+                        file.write("        self.datain['{}'] = None\n".format(r))
                     for a in arguments:
-                        file.write("        self.dataout[\"{}\"] = {}\n".format(a, clean_var(a)))
+                        file.write("        self.dataout['{}'] = {}\n".format(a, clean_var(a)))
                     for a in arguments_default:
-                        file.write("        self.dataout[\"{}\"] = {}\n".format(a, clean_var(a)))
+                        file.write("        self.dataout['{}'] = {}\n".format(a, clean_var(a)))
                     file.write("\n")
                     for r in returns:
-                        cc = "".join(x.capitalize() for x in r.split("-"))
+                        cc = "".join(x.capitalize() for x in r.split('-'))
                         file.write("    def get{}(self):\n".format(clean_var(cc)))
-                        file.write("        return self.datain[\"{}\"]\n".format(r))
+                        file.write("        return self.datain['{}']\n".format(r))
                         file.write("\n")
                     file.write("\n")
 
     print("API classes have been generated.")
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     generate_classes()
