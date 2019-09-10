@@ -97,7 +97,7 @@ class obsws:
 
         try:
             self.ws.close()
-        except socket.error as e:
+        except socket.error:
             pass
 
         if self.thread_recv is not None:
