@@ -80,8 +80,8 @@ def generate_classes():
                     file.write("    \"\"\"\n")
                     file.write("    def __init__({}):\n".format(
                         ", ".join(["self"] +
-                                [toPyVar(a) for a in arguments] +
-                                [toPyVar(a)+" = None" for a in arguments_default])
+                                [clean_var(a) for a in arguments] +
+                                [clean_var(a)+" = None" for a in arguments_default])
                                 )
                     )
                     file.write("        base_classes.Base{}.__init__(self)\n".format(event))
