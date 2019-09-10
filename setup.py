@@ -19,7 +19,7 @@ except:
 
 
 # Generate classes
-class updateClasses(sdist):
+class UpdateClasses(sdist):
     def run(self):
         from os.path import dirname
         from sys import path
@@ -32,7 +32,7 @@ class updateClasses(sdist):
 setup(
   name = 'obs-websocket-py',
   packages = ['obswebsocket'],
-  cmdclass = {'sdist': updateClasses},
+  cmdclass = {'sdist': UpdateClasses},
   license = 'MIT',
   version = version,
   description = 'Python library to communicate with an obs-websocket server.',
