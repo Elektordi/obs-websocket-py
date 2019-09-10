@@ -7,7 +7,7 @@ from six.moves.urllib.request import urlopen
 
 github_user = 'Palakis'
 github_repo = 'obs-websocket'
-github_branch = 'master'
+github_branch = '4.x-current'
 github_path = 'docs/generated/comments.json'
 
 
