@@ -30,10 +30,10 @@ def generate_classes():
     data = json.loads(urlopen(import_url).read().decode('utf-8'))
     print("Download OK. Generating python files...")
 
-    for event in ['requests','events']:
+    for event in ['requests', 'events']:
         if event not in data:
             raise Exception("Missing {} in data.".format(event))
-        with open('obswebsocket/{}.py'.format(event),'w') as f:
+        with open('obswebsocket/{}.py'.format(event), 'w') as f:
 
             f.write("#!/usr/bin/env python\n")
             f.write("# -*- coding: utf-8 -*-\n")
