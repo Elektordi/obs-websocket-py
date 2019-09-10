@@ -33,7 +33,7 @@ class Baserequests:
     def input(self, data):
         r = copy.copy(data)
         del r['message-id']
-        self.status = (r['status']=="ok")
+        self.status = (r['status'] == "ok")
         del r['status']
         self.datain = r
 
