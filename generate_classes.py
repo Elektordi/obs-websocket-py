@@ -6,7 +6,10 @@ import six.moves.urllib.request
 import json
 import datetime
 
-import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/master/docs/generated/comments.json"
+github_user = "Palakis"
+github_repo = "obs-websocket"
+github_branch = "master"
+github_path = "docs/generated/comments.json"
 
 def toPyVar(string):
     """Converts a string to a suitable variable name by removing not allowed characters."""
@@ -18,6 +21,8 @@ def toPyVar(string):
 
 def generate_classes():
     """Generates the necessary classes."""
+    import_url = "https://raw.githubusercontent.com/{}/{}/{}/{}".format(
+        github_user, github_repo, github_branch, github_path)
     print("Downloading %s for last API version."%(import_url))
     data = json.loads(six.moves.urllib.request.urlopen(import_url).read().decode('utf-8'))
     print("Download OK. Generating python files...")
