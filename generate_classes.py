@@ -31,7 +31,7 @@ def generate_classes():
     print("Download OK. Generating python files...")
 
     for event in ['requests','events']:
-        if not event in data:
+        if event not in data:
             raise Exception("Missing {} in data.".format(event))
         with open('obswebsocket/{}.py'.format(event),'w') as file:
 
