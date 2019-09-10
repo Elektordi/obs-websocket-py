@@ -1,21 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-import socket
-import websocket
-import json
-import hashlib
 import base64
+import hashlib
+import json
+import logging
+import socket
 import threading
 import time
-
-import logging
-LOG = logging.getLogger(__name__)
+import websocket
 
 from . import exceptions
 from . import base_classes
 from . import events
+
+LOG = logging.getLogger(__name__)
 
 
 class obsws:
