@@ -239,7 +239,7 @@ class RecvThread(threading.Thread):
                         result['message-id'], result))
                     self.core.answers[result['message-id']] = result
                 else:
-                    LOG.warning("Unknow message: {}".format(result))
+                    LOG.warning("Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
