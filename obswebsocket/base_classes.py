@@ -6,7 +6,7 @@ import copy
 
 class Baseevents:
     def __init__(self):
-        self.name = "?"
+        self.name = '?'
         self.datain = {}
 
     def input(self, data):
@@ -20,7 +20,7 @@ class Baseevents:
 
 class Baserequests:
     def __init__(self):
-        self.name = "?"
+        self.name = '?'
         self.datain = {}
         self.dataout = {}
         self.status = None
@@ -33,7 +33,7 @@ class Baserequests:
     def input(self, data):
         r = copy.copy(data)
         del r['message-id']
-        self.status = (r['status'] == "ok")
+        self.status = (r['status'] == 'ok')
         del r['status']
         self.datain = r
 
