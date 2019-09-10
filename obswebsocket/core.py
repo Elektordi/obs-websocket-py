@@ -248,7 +248,8 @@ class RecvThread(threading.Thread):
         # end while
         LOG.debug("RecvThread ended.")
 
-    def buildEvent(self, data):
+    @staticmethod
+    def build_event(data):
         name = data["update-type"]
         try:
             obj = getattr(events, name)()
