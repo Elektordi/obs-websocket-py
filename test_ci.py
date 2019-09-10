@@ -12,10 +12,10 @@ def test_load():
 
 def test_build_ok_requests():
     r = requests.GetVersion()
-    assert r.name=="GetVersion"
+    assert r.name == "GetVersion"
 
 
 def test_build_ok_events():
     e = events.Heartbeat()
-    assert e.name=="Heartbeat"
+    assert e.name == "Heartbeat"
 
