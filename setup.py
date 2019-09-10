@@ -17,6 +17,7 @@ except:
     pass
 # If not possible, leave it in Markdown...
 
+
 # Generate classes
 class updateClasses(sdist):
     def run(self):
@@ -26,6 +27,7 @@ class updateClasses(sdist):
         from generate_classes import generate_classes
         generate_classes()
         sdist.run(self)
+
 
 setup(
   name = 'obs-websocket-py',
