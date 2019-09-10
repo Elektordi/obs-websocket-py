@@ -55,7 +55,7 @@ def generate_classes():
                         if len(i["params"]) > 0:
                             file.write("    :Arguments:\n")
                             for a in i["params"]:
-                                file.write("       *{}*\n".format(toPyVar(a["name"])))
+                                file.write("       *{}*\n".format(clean_var(a["name"])))
                                 file.write("            type: {}\n".format(a["type"]))
                                 file.write("            {}\n".format(a["description"]))
                                 if "optional" in a["type"]:
@@ -70,7 +70,7 @@ def generate_classes():
                         if len(i["returns"]) > 0:
                             file.write("    :Returns:\n")
                             for r in i["returns"]:
-                                file.write("       *{}*\n".format(toPyVar(r["name"])))
+                                file.write("       *{}*\n".format(clean_var(r["name"])))
                                 file.write("            type: {}\n".format(r["type"]))
                                 file.write("            {}\n".format(r["description"]))
                                 returns.append(r["name"])
@@ -89,17 +89,17 @@ def generate_classes():
                     for r in returns:
                         file.write("        self.datain[\"{}\"] = None\n".format(r))
                     for a in arguments:
-                        file.write("        self.dataout[\"{}\"] = {}\n".format(a, toPyVar(a)))
+                        file.write("        self.dataout[\"{}\"] = {}\n".format(a, clean_var(a)))
                     for a in arguments_default:
-                        file.write("        self.dataout[\"{}\"] = {}\n".format(a, toPyVar(a)))
+                        file.write("        self.dataout[\"{}\"] = {}\n".format(a, clean_var(a)))
                     file.write("\n")
                     for r in returns:
                         cc = "".join(x.capitalize() for x in r.split("-"))
-                        file.write("    def get{}(self):\n".format(toPyVar(cc)))
+                        file.write("    def get{}(self):\n".format(clean_var(cc)))
                         file.write("        return self.datain[\"{}\"]\n".format(r))
                         file.write("\n")
                     file.write("\n")
-                    
+
     print("API classes have been generated.")
 
 if __name__ == "__main__":
