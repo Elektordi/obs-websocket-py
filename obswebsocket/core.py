@@ -32,7 +32,7 @@ class obsws:
     For advanced usage, including events callback, see the 'samples' directory.
     """
 
-    def __init__(self, host = 'localhost', port = 4444, password = ''):
+    def __init__(self, host='localhost', port=4444, password=''):
         """
         Construct a new obsws wrapper
 
@@ -50,7 +50,7 @@ class obsws:
         self.port = port
         self.password = password
 
-    def connect(self, host = None, port = None):
+    def connect(self, host=None, port=None):
         """
         Connect to the websocket server
 
