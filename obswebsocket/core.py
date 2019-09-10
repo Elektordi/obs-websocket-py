@@ -17,6 +17,7 @@ from . import exceptions
 from . import base_classes
 from . import events
 
+
 class obsws:
     """
     Core class for using obs-websocket-py
@@ -188,7 +189,6 @@ class obsws:
         :return: Nothing
         """
         self.eventmanager.unregister(function, event)
-
 
 
 class RecvThread(threading.Thread):
