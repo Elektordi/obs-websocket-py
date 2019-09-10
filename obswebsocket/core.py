@@ -43,6 +43,7 @@ class obsws:
         """
         self.id = 1
         self.thread_recv = None
+        self.ws = None
         self.eventmanager = EventManager()
         self.answers = {}
 
