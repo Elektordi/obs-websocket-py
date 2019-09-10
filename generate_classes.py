@@ -11,11 +11,15 @@ github_repo = "obs-websocket"
 github_branch = "master"
 github_path = "docs/generated/comments.json"
 
-def toPyVar(string):
-    """Converts a string to a suitable variable name by removing not allowed characters."""
-    for ch in ["-",".","*"]:
-            string=string.replace(ch,"_")
-    string=string.replace("[]","")
+
+def clean_var(string):
+    """
+    Converts a string to a suitable variable name by removing not allowed
+    characters.
+    """
+    for ch in ["-", ".", "*"]:
+            string = string.replace(ch, "_")
+    string = string.replace("[]", "")
     return string
 
 
