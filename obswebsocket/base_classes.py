@@ -3,9 +3,10 @@
 
 import copy
 
+
 class Baseevents:
     def __init__(self):
-        self.name = "?"
+        self.name = '?'
         self.datain = {}
 
     def input(self, data):
@@ -19,7 +20,7 @@ class Baseevents:
 
 class Baserequests:
     def __init__(self):
-        self.name = "?"
+        self.name = '?'
         self.datain = {}
         self.dataout = {}
         self.status = None
@@ -32,7 +33,7 @@ class Baserequests:
     def input(self, data):
         r = copy.copy(data)
         del r['message-id']
-        self.status = (r['status']=="ok")
+        self.status = (r['status'] == 'ok')
         del r['status']
         self.datain = r
 
@@ -40,6 +41,8 @@ class Baserequests:
         if self.status is None:
             return "<{} request ({}) waiting>".format(self.name, self.dataout)
         elif self.status:
-            return "<{} request ({}) called: success ({})>".format(self.name, self.dataout, self.datain)
+            return "<{} request ({}) called: success ({})>".format(
+                self.name, self.dataout, self.datain)
         else:
-            return "<{} request ({}) called: failed ({})>".format(self.name, self.dataout, self.datain)
+            return "<{} request ({}) called: failed ({})>".format(
+                self.name, self.dataout, self.datain)
