@@ -41,6 +41,8 @@ class Baserequests:
         if self.status is None:
             return "<{} request ({}) waiting>".format(self.name, self.dataout)
         elif self.status:
-            return "<{} request ({}) called: success ({})>".format(self.name, self.dataout, self.datain)
+            return "<{} request ({}) called: success ({})>".format(
+                self.name, self.dataout, self.datain)
         else:
-            return "<{} request ({}) called: failed ({})>".format(self.name, self.dataout, self.datain)
+            return "<{} request ({}) called: failed ({})>".format(
+                self.name, self.dataout, self.datain)
