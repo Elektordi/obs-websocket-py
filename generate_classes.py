@@ -43,7 +43,7 @@ def generate_classes():
             file.write("### (Generated on {}) ###\n".format(datetime.datetime.now().isoformat(" ")))
             file.write("\n")
             file.write("from . import base_classes\n")
-            file.write("\n")
+            file.write("\n\n")
             for sec in data[event]:
                 for i in data[event][sec]:
                     file.write("class {}(base_classes.Base{}):\n".format(i['name'], event))
@@ -77,7 +77,7 @@ def generate_classes():
                     except KeyError:
                         pass
 
-                    file.write("    \"\"\"\n")
+                    file.write("    \"\"\"\n\n")
                     file.write("    def __init__({}):\n".format(
                         ", ".join(["self"] +
                                 [clean_var(a) for a in arguments] +
