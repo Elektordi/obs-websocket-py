@@ -56,9 +56,9 @@ class obsws:
 
         :return: Nothing
         """
-        if not host is None:
+        if host is not None:
             self.host = host
-        if not port is None:
+        if port is not None:
             self.port = port
 
         try:
@@ -91,7 +91,7 @@ class obsws:
         :return: Nothing
         """
         LOG.info("Disconnecting...")
-        if not self.thread_recv is None:
+        if self.thread_recv is not None:
             self.thread_recv.running = False
 
         try:
@@ -99,7 +99,7 @@ class obsws:
         except socket.error as e:
             pass
 
-        if not self.thread_recv is None:
+        if self.thread_recv is not None:
             self.thread_recv.join()
             self.thread_recv = None
 
@@ -140,7 +140,7 @@ class obsws:
         pass
 
     def _run_threads(self):
-        if not self.thread_recv is None:
+        if self.thread_recv is not None:
             self.thread_recv.running = False
         self.thread_recv = RecvThread(self)
         self.thread_recv.daemon = True
