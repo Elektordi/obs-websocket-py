@@ -86,11 +86,12 @@ def generate_classes():
 
                     f.write("    \"\"\"\n\n")
                     f.write("    def __init__({}):\n".format(
-                        ", ".join(["self"] +
-                                [clean_var(a) for a in arguments] +
-                                [clean_var(a)+" = None" for a in arguments_default])
-                                )
-                    )
+                        ", ".join(
+                            ["self"] +
+                            [clean_var(a) for a in arguments] +
+                            [clean_var(a) + "=None" for a in arguments_default]
+                        )
+                    ))
                     f.write("        Base{}.__init__(self)\n".format(event))
                     f.write("        self.name = '{}'\n".format(i['name']))
                     for r in returns:
