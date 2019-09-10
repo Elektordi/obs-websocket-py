@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-version = "0.4"
-
 from distutils.core import setup
 from setuptools.command.sdist import sdist
+
+version = "0.4"
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"
