@@ -6,7 +6,7 @@ password = "secret"
 
 
 def test_load():
-    ws = obsws(host, port, password)
+    _ = obsws(host, port, password)
     # Just test everything is ok with the object...
 
 
