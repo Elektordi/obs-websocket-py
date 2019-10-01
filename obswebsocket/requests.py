@@ -828,7 +828,7 @@ class GetVolume(base_classes.Baserequests):
         return self.datain["volume"]
 
     def getMute(self):
-        return self.datain["mute"]
+        return self.datain["muted"]
 
 
 class SetVolume(base_classes.Baserequests):
