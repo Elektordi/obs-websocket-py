@@ -1,48 +1,49 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-import socket
-import websocket
-import json
-import hashlib
 import base64
+import hashlib
+import json
+import logging
+import socket
 import threading
 import time
-
-import logging
-LOG = logging.getLogger(__name__)
+import websocket
 
 from . import exceptions
 from . import base_classes
 from . import events
+
+LOG = logging.getLogger(__name__)
+
 
 class obsws:
     """
     Core class for using obs-websocket-py
 
     Simple usage:
-        >>> import obswebsocket, obswebsocket.requests
+        >>> import obswebsocket, obswebsocket.requests as obsrequests
         >>> client = obswebsocket.obsws("localhost", 4444, "secret")
         >>> client.connect()
-        >>> client.call(obswebsocket.requests.GetVersion()).getObsWebsocketVersion()
+        >>> client.call(obsrequests.GetVersion()).getObsWebsocketVersion()
         u'4.1.0'
         >>> client.disconnect()
 
     For advanced usage, including events callback, see the 'samples' directory.
     """
 
-    def __init__(self, host = 'localhost', port = 4444, password = ''):
+    def __init__(self, host='localhost', port=4444, password=''):
         """
         Construct a new obsws wrapper
 
         :param host: Hostname to connect to
         :param port: TCP Port to connect to (Default is 4444)
-        :param password: Password for the websocket server (Leave this field empty if no auth enabled
-            on the server)
+        :param password: Password for the websocket server (Leave this field
+            empty if no auth enabled on the server)
         """
         self.id = 1
         self.thread_recv = None
+        self.ws = None
         self.eventmanager = EventManager()
         self.answers = {}
 
@@ -50,15 +51,15 @@ class obsws:
         self.port = port
         self.password = password
 
-    def connect(self, host = None, port = None):
+    def connect(self, host=None, port=None):
         """
         Connect to the websocket server
 
         :return: Nothing
         """
-        if not host is None:
+        if host is not None:
             self.host = host
-        if not port is None:
+        if port is not None:
             self.port = port
 
         try:
@@ -91,20 +92,23 @@ class obsws:
         :return: Nothing
         """
         LOG.info("Disconnecting...")
-        if not self.thread_recv is None:
+        if self.thread_recv is not None:
             self.thread_recv.running = False
 
         try:
             self.ws.close()
-        except socket.error as e:
+        except socket.error:
             pass
 
-        if not self.thread_recv is None:
+        if self.thread_recv is not None:
             self.thread_recv.join()
             self.thread_recv = None
 
     def _auth(self, password):
-        auth_payload = {"request-type": "GetAuthRequired", "message-id": str(self.id)}
+        auth_payload = {
+            "request-type": "GetAuthRequired",
+            "message-id": str(self.id),
+        }
         self.id += 1
         self.ws.send(json.dumps(auth_payload))
         result = json.loads(self.ws.recv())
@@ -113,10 +117,22 @@ class obsws:
             raise exceptions.ConnectionFailure(result['error'])
             
         if result.get('authRequired'):
-            secret = base64.b64encode(hashlib.sha256((password + result['salt']).encode('utf-8')).digest())
-            auth = base64.b64encode(hashlib.sha256(secret + result['challenge'].encode('utf-8')).digest()).decode('utf-8')
+            secret = base64.b64encode(
+                hashlib.sha256(
+                    (password + result['salt']).encode('utf-8')
+                ).digest()
+            )
+            auth = base64.b64encode(
+                hashlib.sha256(
+                    secret + result['challenge'].encode('utf-8')
+                ).digest()
+            ).decode('utf-8')
 
-            auth_payload = {"request-type": "Authenticate", "message-id": str(self.id), "auth": auth}
+            auth_payload = {
+                "request-type": "Authenticate",
+                "message-id": str(self.id),
+                "auth": auth,
+            }
             self.id += 1
             self.ws.send(json.dumps(auth_payload))
             result = json.loads(self.ws.recv())
@@ -125,7 +141,7 @@ class obsws:
         pass
 
     def _run_threads(self):
-        if not self.thread_recv is None:
+        if self.thread_recv is not None:
             self.thread_recv.running = False
         self.thread_recv = RecvThread(self)
         self.thread_recv.daemon = True
@@ -135,11 +151,13 @@ class obsws:
         """
         Make a call to the OBS server through the Websocket.
 
-        :param obj: Request (class from obswebsocket.requests module) to send to the server.
+        :param obj: Request (class from obswebsocket.requests module) to send
+            to the server.
         :return: Request object populated with response data.
         """
         if not isinstance(obj, base_classes.Baserequests):
-            raise exceptions.ObjectError("Call parameter is not a request object")
+            raise exceptions.ObjectError(
+                "Call parameter is not a request object")
         payload = obj.data()
         r = self.send(payload)
         obj.input(r)
@@ -149,46 +167,48 @@ class obsws:
         """
         Make a raw json call to the OBS server through the Websocket.
 
-        :param obj: Request (python dict) to send to the server. Do not include field "message-id".
+        :param data: Request (python dict) to send to the server. Do not
+            include field "message-id".
         :return: Response (python dict) from the server.
         """
-        id = str(self.id)
+        message_id = str(self.id)
         self.id += 1
-        data["message-id"] = id
-        LOG.debug("Sending message id {}: {}".format(id, data))
+        data["message-id"] = message_id
+        LOG.debug("Sending message id {}: {}".format(message_id, data))
         self.ws.send(json.dumps(data))
-        return self._waitmessage(id)
+        return self._wait_message(message_id)
 
-    def _waitmessage(self, id):
-        timeout = time.time() + 60 # Timeout = 60s
+    def _wait_message(self, message_id):
+        timeout = time.time() + 60  # Timeout = 60s
         while time.time() < timeout:
-            if id in self.answers:
-                return self.answers.pop(id)
+            if message_id in self.answers:
+                return self.answers.pop(message_id)
             time.sleep(0.1)
-        raise exceptions.MessageTimeout("No answer for message {}".format(id))
+        raise exceptions.MessageTimeout("No answer for message {}".format(
+            message_id))
 
-    def register(self, function, event = None):
+    def register(self, func, event=None):
         """
         Register a new hook in the websocket client
 
-        :param function: Callback function pointer for the hook
-        :param event: Event (class from obswebsocket.events module) to trigger the hook on.
-            Default is None, which means trigger on all events.
+        :param func: Callback function pointer for the hook
+        :param event: Event (class from obswebsocket.events module) to trigger
+            the hook on. Default is None, which means trigger on all events.
         :return: Nothing
         """
-        self.eventmanager.register(function, event)
+        self.eventmanager.register(func, event)
 
-    def unregister(self, function, event = None):
+    def unregister(self, func, event=None):
         """
         Unregister a new hook in the websocket client
 
-        :param function: Callback function pointer for the hook
-        :param event: Event (class from obswebsocket.events module) which triggered the hook on.
-            Default is None, which means unregister this function for all events.
+        :param func: Callback function pointer for the hook
+        :param event: Event (class from obswebsocket.events module) which
+            triggered the hook on. Default is None, which means unregister this
+            function for all events.
         :return: Nothing
         """
-        self.eventmanager.unregister(function, event)
-
+        self.eventmanager.unregister(func, event)
 
 
 class RecvThread(threading.Thread):
@@ -205,20 +225,21 @@ class RecvThread(threading.Thread):
             try:
                 message = self.ws.recv()
 
-                # recv() can return empty string if socket is closed during blocking read (Issue #6)
+                # recv() can return an empty string (Issue #6)
                 if not message:
                     continue
 
                 result = json.loads(message)
                 if 'update-type' in result:
                     LOG.debug("Got message: {}".format(result))
-                    obj = self.buildEvent(result)
+                    obj = self.build_event(result)
                     self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
-                    LOG.debug("Got answer for id {}: {}".format(result['message-id'], result))
+                    LOG.debug("Got answer for id {}: {}".format(
+                        result['message-id'], result))
                     self.core.answers[result['message-id']] = result
                 else:
-                    LOG.warning("Unknow message: {}".format(result))
+                    LOG.warning("Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
@@ -227,7 +248,8 @@ class RecvThread(threading.Thread):
         # end while
         LOG.debug("RecvThread ended.")
 
-    def buildEvent(self, data):
+    @staticmethod
+    def build_event(data):
         name = data["update-type"]
         try:
             obj = getattr(events, name)()
