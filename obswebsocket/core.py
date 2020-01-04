@@ -174,7 +174,7 @@ class obsws:
         message_id = str(self.id)
         self.id += 1
         data["message-id"] = message_id
-        LOG.debug("Sending message id {}: {}".format(message_id, data))
+        LOG.debug(u"Sending message id {}: {}".format(message_id, data))
         self.ws.send(json.dumps(data))
         return self._wait_message(message_id)
 
@@ -184,7 +184,7 @@ class obsws:
             if message_id in self.answers:
                 return self.answers.pop(message_id)
             time.sleep(0.1)
-        raise exceptions.MessageTimeout("No answer for message {}".format(
+        raise exceptions.MessageTimeout(u"No answer for message {}".format(
             message_id))
 
     def register(self, func, event=None):
@@ -231,20 +231,20 @@ class RecvThread(threading.Thread):
 
                 result = json.loads(message)
                 if 'update-type' in result:
-                    LOG.debug("Got message: {}".format(result))
+                    LOG.debug(u"Got message: {}".format(result))
                     obj = self.build_event(result)
                     self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
-                    LOG.debug("Got answer for id {}: {}".format(
+                    LOG.debug(u"Got answer for id {}: {}".format(
                         result['message-id'], result))
                     self.core.answers[result['message-id']] = result
                 else:
-                    LOG.warning("Unknown message: {}".format(result))
+                    LOG.warning(u"Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
             except (ValueError, exceptions.ObjectError) as e:
-                LOG.warning("Invalid message: {} ({})".format(message, e))
+                LOG.warning(u"Invalid message: {} ({})".format(message, e))
         # end while
         LOG.debug("RecvThread ended.")
 
@@ -254,7 +254,7 @@ class RecvThread(threading.Thread):
         try:
             obj = getattr(events, name)()
         except AttributeError:
-            raise exceptions.ObjectError("Invalid event {}".format(name))
+            raise exceptions.ObjectError(u"Invalid event {}".format(name))
         obj.input(data)
         return obj
 

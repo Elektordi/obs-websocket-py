@@ -16,11 +16,11 @@ password = "secret"
 
 
 def on_event(message):
-    print("Got message: {}".format(message))
+    print(u"Got message: {}".format(message))
 
 
 def on_switch(message):
-    print("You changed the scene to {}".format(message.getSceneName()))
+    print(u"You changed the scene to {}".format(message.getSceneName()))
 
 
 ws = obsws(host, port, password)
