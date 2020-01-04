@@ -6,7 +6,7 @@ import six.moves.urllib.request
 import json
 import datetime
 
-import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/master/docs/generated/comments.json"
+import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/4.x-current/docs/generated/comments.json"
 
 def toPyVar(string):
     """Converts a string to a suitable variable name by removing not allowed characters."""
