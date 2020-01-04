@@ -7,7 +7,7 @@ _Licensed under the MIT License_
 
 GitHub project: https://github.com/Elektordi/obs-websocket-py
 
-PyPI package: https://pypi.python.org/pypi/obs-websocket-py
+PyPI package: https://pypi.org/project/obs-websocket-py/
 
 ## Installation
 
@@ -68,7 +68,7 @@ obswebsocket.core.obsws = class obsws
  |      :return: Nothing
  |  
  |  reconnect(self)
- |      TODO (Not yet implemented)
+ |      Restart the connection to the websocket server
  |      
  |      :return: Nothing
  |  

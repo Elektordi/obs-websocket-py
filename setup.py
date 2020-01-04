@@ -5,17 +5,20 @@ from __future__ import print_function
 from distutils.core import setup
 from setuptools.command.sdist import sdist
 
-version = "0.4"
+version = "0.5"
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"
 try:
-    description = open('README.md', 'r').read()
+    description = open('README.md', 'rt').read()
     import pypandoc
     description = pypandoc.convert_text(description, 'rst', 'markdown_github')
 except ImportError:
     pass
 # If not possible, leave it in Markdown...
+
+requirements = open('requirements.txt', 'rt').readlines()
+requirements = [x.strip() for x in requirements if x]
 
 
 # Generate classes
@@ -32,7 +35,7 @@ class UpdateClasses(sdist):
 setup(
     name='obs-websocket-py',
     packages=['obswebsocket'],
-    cmdclass={'sdist': UpdateClasses},
+    # cmdclass={'sdist': UpdateClasses},
     license='MIT',
     version=version,
     description='Python library to communicate with an obs-websocket server.',
@@ -54,7 +57,7 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
-    install_requires=['websocket-client', 'six'],
+    install_requires=requirements,
 )
