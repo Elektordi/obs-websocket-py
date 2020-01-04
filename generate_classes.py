@@ -5,7 +5,8 @@ from datetime import datetime
 import json
 from six.moves.urllib.request import urlopen
 
-import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/4.x-current/docs/generated/comments.json"
+import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/4.x-current/docs/generated/comments.json"  # noqa: E501
+
 
 def clean_var(string):
     """
@@ -13,7 +14,7 @@ def clean_var(string):
     characters.
     """
     for ch in ['-', '.', '*']:
-            string = string.replace(ch, '_')
+        string = string.replace(ch, '_')
     string = string.replace('[]', '')
     return string
 

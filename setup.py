@@ -13,7 +13,7 @@ try:
     description = open('README.md', 'r').read()
     import pypandoc
     description = pypandoc.convert_text(description, 'rst', 'markdown_github')
-except:
+except ImportError:
     pass
 # If not possible, leave it in Markdown...
 

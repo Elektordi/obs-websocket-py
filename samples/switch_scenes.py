@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 sys.path.append('../')
-from obswebsocket import obsws, requests
+from obswebsocket import obsws, requests  # noqa: E402
 
 
 host = "localhost"

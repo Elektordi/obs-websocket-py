@@ -115,7 +115,7 @@ class obsws:
 
         if result['status'] != 'ok':
             raise exceptions.ConnectionFailure(result['error'])
-            
+
         if result.get('authRequired'):
             secret = base64.b64encode(
                 hashlib.sha256(
@@ -270,7 +270,7 @@ class EventManager:
     def unregister(self, callback, trigger):
         for c, t in self.functions:
             if (c == callback) and (trigger is None or t == trigger):
-                    self.functions.remove((c, t))
+                self.functions.remove((c, t))
 
     def trigger(self, data):
         for callback, trigger in self.functions:

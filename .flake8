@@ -1,0 +1,5 @@
+[flake8]
+exclude = build/*
+per-file-ignores =
+	obswebsocket/requests.py: E501 W391 W293
+	obswebsocket/events.py: E501 W391 W293

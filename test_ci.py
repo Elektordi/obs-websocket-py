@@ -18,4 +18,3 @@ def test_build_ok_requests():
 def test_build_ok_events():
     e = events.Heartbeat()
     assert e.name == "Heartbeat"
-
