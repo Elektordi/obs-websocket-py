@@ -243,6 +243,9 @@ class RecvThread(threading.Thread):
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     self.core.reconnect()
+            except OSError as e:
+                if self.running:
+                    raise e
             except (ValueError, exceptions.ObjectError) as e:
                 LOG.warning(u"Invalid message: {} ({})".format(message, e))
         # end while
