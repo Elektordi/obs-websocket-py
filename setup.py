@@ -5,7 +5,7 @@ from __future__ import print_function
 from distutils.core import setup
 from setuptools.command.sdist import sdist
 
-version = "0.5"
+version = "0.5.1"
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"
@@ -43,8 +43,6 @@ setup(
     author='Guillaume "Elektordi" Genty',
     author_email='elektordi@elektordi.net',
     url='https://github.com/Elektordi/obs-websocket-py',
-    download_url='https://github.com/Elektordi/obs-websocket-py/archive/{}.tar'
-                 '.gz'.format(version),
     keywords=['obs', 'obs-studio', 'websocket'],
     classifiers=[
         'License :: OSI Approved :: MIT License',

@@ -1,5 +1,6 @@
 include README.md
 include LICENSE
+include requirements.txt
 include setup.cfg
 include setup.py
 recursive-include obswebsocket *.py
