@@ -180,6 +180,7 @@ class obsws:
 
     def _wait_message(self, message_id):
         timeout = time.time() + 60  # Timeout = 60s
+        time.sleep(0.05)
         while time.time() < timeout:
             if message_id in self.answers:
                 return self.answers.pop(message_id)
