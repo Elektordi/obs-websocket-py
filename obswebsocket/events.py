@@ -1354,3 +1354,151 @@ class SceneItemDeselected(Baseevents):
         return self.datain['scene-name']
 
 
+class MediaPlaying(Baseevents):
+    """A media source is playing.
+
+    :Returns:
+       *sourceName*
+            type: String
+            Source name
+       *sourceKind*
+            type: String
+            Source kind.
+    """
+
+    def __init__(self):
+        Baseevents.__init__(self)
+        self.name = 'MediaPlaying'
+        self.datain['sourceName'] = None
+        self.datain['sourceKind'] = None
+
+    def getSourcename(self):
+        return self.datain['sourceName']
+
+    def getSourcekind(self):
+        return self.datain['sourceKind']
+
+
+class MediaStarted(Baseevents):
+    """A media source has been started.
+
+    :Returns:
+       *sourceName*
+            type: String
+            Source name
+       *sourceKind*
+            type: String
+            Source kind.
+    """
+
+    def __init__(self):
+        Baseevents.__init__(self)
+        self.name = 'MediaStarted'
+        self.datain['sourceName'] = None
+        self.datain['sourceKind'] = None
+
+    def getSourcename(self):
+        return self.datain['sourceName']
+
+    def getSourcekind(self):
+        return self.datain['sourceKind']
+
+
+class MediaRestarted(Baseevents):
+    """A media source has been restarted.
+
+    :Returns:
+       *sourceName*
+            type: String
+            Source name
+       *sourceKind*
+            type: String
+            Source kind.
+    """
+
+    def __init__(self):
+        Baseevents.__init__(self)
+        self.name = 'MediaRestarted'
+        self.datain['sourceName'] = None
+        self.datain['sourceKind'] = None
+
+    def getSourcename(self):
+        return self.datain['sourceName']
+
+    def getSourcekind(self):
+        return self.datain['sourceKind']
+
+
+class MediaPaused(Baseevents):
+    """A media source has been paused.
+
+    :Returns:
+       *sourceName*
+            type: String
+            Source name
+       *sourceKind*
+            type: String
+            Source kind.
+    """
+
+    def __init__(self):
+        Baseevents.__init__(self)
+        self.name = 'MediaPaused'
+        self.datain['sourceName'] = None
+        self.datain['sourceKind'] = None
+
+    def getSourcename(self):
+        return self.datain['sourceName']
+
+    def getSourcekind(self):
+        return self.datain['sourceKind']
+
+
+class MediaStopped(Baseevents):
+    """A media source has been stopped.
+
+    :Returns:
+       *sourceName*
+            type: String
+            Source name
+       *sourceKind*
+            type: String
+            Source kind.
+    """
+
+    def __init__(self):
+        Baseevents.__init__(self)
+        self.name = 'MediaStopped'
+        self.datain['sourceName'] = None
+        self.datain['sourceKind'] = None
+
+    def getSourcename(self):
+        return self.datain['sourceName']
+
+    def getSourcekind(self):
+        return self.datain['sourceKind']
+
+
+class MediaEnded(Baseevents):
+    """A media source has ended (example: videofile hit the end).
+
+    :Returns:
+       *sourceName*
+            type: String
+            Source name
+       *sourceKind*
+            type: String
+            Source kind.
+    """
+
+    def __init__(self):
+        Baseevents.__init__(self)
+        self.name = 'MediaEnded'
+        self.datain['sourceName'] = None
+        self.datain['sourceKind'] = None
+
+    def getSourcename(self):
+        return self.datain['sourceName']
+
+    def getSourcekind(self):
+        return self.datain['sourceKind']
