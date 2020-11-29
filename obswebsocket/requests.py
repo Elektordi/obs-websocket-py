@@ -2226,7 +2226,7 @@ class GetAudioMonitorType(Baserequests):
         self.datain['monitorType'] = None
         self.dataout['sourceName'] = sourceName
 
-    def getMonitortype(self):
+    def getMonitorType(self):
         return self.datain['monitorType']
 
 
