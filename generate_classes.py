@@ -94,7 +94,7 @@ def generate_classes():
                         f.write("        self.dataout['{}'] = {}\n".format(a, clean_var(a)))
                     f.write("\n")
                     for r in returns:
-                        cc = "".join(x.capitalize() for x in r.split('-'))
+                        cc = "".join(x[0].upper() + x[1:] for x in r.split('-'))
                         f.write("    def get{}(self):\n".format(clean_var(cc)))
                         f.write("        return self.datain['{}']\n".format(r))
                         f.write("\n")
