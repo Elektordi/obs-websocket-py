@@ -4,7 +4,7 @@
 import copy
 
 
-class Baseevents:
+class Baseevents(object):
     def __init__(self):
         self.name = '?'
         self.datain = {}
@@ -18,7 +18,7 @@ class Baseevents:
         return u"<{} event ({})>".format(self.name, self.datain)
 
 
-class Baserequests:
+class Baserequests(object):
     def __init__(self):
         self.name = '?'
         self.datain = {}
