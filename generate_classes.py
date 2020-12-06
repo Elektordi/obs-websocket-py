@@ -4,6 +4,7 @@
 from datetime import datetime
 import json
 from six.moves.urllib.request import urlopen
+from collections import OrderedDict
 
 import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/4.x-current/docs/generated/comments.json"  # noqa: E501
 
@@ -20,7 +21,7 @@ def clean_var(string):
 def generate_classes():
     """Generates the necessary classes."""
     print("Downloading {} for last API version.".format(import_url))
-    data = json.loads(urlopen(import_url).read().decode('utf-8'))
+    data = json.loads(urlopen(import_url).read().decode('utf-8'), object_pairs_hook=OrderedDict)
     print("Download OK. Generating python files...")
 
     for event in ['requests', 'events']:
