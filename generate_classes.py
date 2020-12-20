@@ -52,10 +52,13 @@ def generate_classes():
                                 f.write("       *{}*\n".format(clean_var(a['name'])))
                                 f.write("            type: {}\n".format(a['type']))
                                 f.write("            {}\n".format(a['description']))
+                                name = a['name'].split(".")[0]
+                                if name in arguments or name in arguments_default:
+                                    continue
                                 if 'optional' in a['type']:
-                                    arguments_default.append(a['name'])
+                                    arguments_default.append(name)
                                 else:
-                                    arguments.append(a['name'])
+                                    arguments.append(name)
                     except KeyError:
                         pass
 
@@ -68,14 +71,13 @@ def generate_classes():
                                 f.write("       *{}*\n".format(clean_var(r['name'])))
                                 f.write("            type: {}\n".format(r['type']))
                                 f.write("            {}\n".format(r['description']))
-                                returns.append(r['name'])
+                                name = r['name'].split(".")[0]
+                                if name in returns:
+                                    continue
+                                returns.append(name)
                     except KeyError:
                         pass
 
-                    arguments = set([x.split(".")[0] for x in arguments])
-                    arguments_default = set([x.split(".")[0] for x in arguments_default])
-                    arguments_default = set([x for x in arguments_default if x not in arguments])
-                    returns = set([x.split(".")[0] for x in returns])
 
                     f.write("    \"\"\"\n\n")
                     f.write("    def __init__({}):\n".format(
