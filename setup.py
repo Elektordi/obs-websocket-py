@@ -5,7 +5,7 @@ from __future__ import print_function
 from distutils.core import setup
 from setuptools.command.sdist import sdist
 
-version = "0.5.2"
+version = "0.5.3"
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"
