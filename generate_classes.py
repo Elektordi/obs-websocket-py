@@ -78,7 +78,6 @@ def generate_classes():
                     except KeyError:
                         pass
 
-
                     f.write("    \"\"\"\n\n")
                     f.write("    def __init__({}):\n".format(
                         ", ".join(
