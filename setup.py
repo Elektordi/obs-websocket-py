@@ -44,6 +44,7 @@ setup(
     author_email='elektordi@elektordi.net',
     url='https://github.com/Elektordi/obs-websocket-py',
     keywords=['obs', 'obs-studio', 'websocket'],
+    entry_points={"console_scripts": ["obs-web-cli=obswebsocket.cli:main"]},
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Environment :: Plugins',

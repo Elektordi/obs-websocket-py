@@ -1,5 +1,5 @@
 # obs-websocket-py
-Python library to communicate with an [obs-websocket](https://github.com/Palakis/obs-websocket) server.
+Python library & CLI to communicate with an [obs-websocket](https://github.com/Palakis/obs-websocket) server.
 
 _Licensed under the MIT License_
 
@@ -93,6 +93,52 @@ obswebsocket.core.obsws = class obsws
  |      :param event: Event (class from obswebsocket.events module) which triggered the hook on.
  |          Default is None, which means unregister this function for all events.
  |      :return: Nothing
+```
+
+There is also a simple CLI provided with the installation. It can be used in variety of ways, but is not meant to cover all use cases.
+
+```
+$ obs-web-cli --help
+OBS Studio CLI using OBS Websocket Plugin
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --host HOST           Hostname to connect to (default: localhost)
+  --port PORT           Port to connect to (default: 4444)
+  --password PASSWORD   Password to use. Defaults to OBS_WEBSOCKET_PASS env
+                        var (default: None)
+  --debug               Enable debugging output (default: False)
+
+Recognized commands:
+  {GetStreamingStatus,StartStopStreaming,StartStreaming,StopStreaming,SetStreamSettings,GetStreamSettings,SaveStreamSettings,SendCaptions,GetStudioModeStatus,GetPreviewScene,SetPreviewScene,TransitionToProgram,EnableStudioMode,DisableStudioMode,ToggleStudioMode,ListOutputs,GetOutputInfo,StartOutput,StopOutput,StartStopReplayBuffer,StartReplayBuffer,StopReplayBuffer,SaveReplayBuffer,SetCurrentScene,GetCurrentScene,GetSceneList,ReorderSceneItems,SetCurrentProfile,GetCurrentProfile,ListProfiles,GetVersion,GetAuthRequired,Authenticate,SetHeartbeat,SetFilenameFormatting,GetFilenameFormatting,GetStats,BroadcastCustomMessage,GetVideoInfo,StartStopRecording,StartRecording,StopRecording,PauseRecording,ResumeRecording,SetRecordingFolder,GetRecordingFolder,GetSourcesList,GetSourceTypesList,GetVolume,SetVolume,GetMute,SetMute,ToggleMute,SetSyncOffset,GetSyncOffset,GetSourceSettings,SetSourceSettings,GetTextGDIPlusProperties,SetTextGDIPlusProperties,GetTextFreetype2Properties,SetTextFreetype2Properties,GetBrowserSourceProperties,SetBrowserSourceProperties,GetSpecialSources,GetSourceFilters,GetSourceFilterInfo,AddFilterToSource,RemoveFilterFromSource,ReorderSourceFilter,MoveSourceFilter,SetSourceFilterSettings,SetSourceFilterVisibility,TakeSourceScreenshot,SetCurrentSceneCollection,GetCurrentSceneCollection,ListSceneCollections,GetTransitionList,GetCurrentTransition,SetCurrentTransition,SetTransitionDuration,GetTransitionDuration,GetSceneItemProperties,SetSceneItemProperties,ResetSceneItem,SetSceneItemRender,SetSceneItemPosition,SetSceneItemTransform,SetSceneItemCrop,DeleteSceneItem,DuplicateSceneItem}
+```
+
+Simple arguments can be provided directly on the command line:
+
+```
+$ obs-web-cli SetCurrentSceneCollection "Untitled"
+INFO:obswebsocket.core:Connecting...
+INFO:obswebsocket.core:Connected!
+{}
+INFO:obswebsocket.core:Disconnecting...
+```
+
+More complex arguments might require passing in a JSON string `json:` prefix. For example:
+
+```
+$ obs-web-cli SetSourceSettings "gif_source1" 'json:{"looping": true}' ffmpeg_source
+INFO:obswebsocket.core:Connecting...
+INFO:obswebsocket.core:Connected!
+{
+    "sourceName": "gif_source1",
+    "sourceSettings": {
+        "hw_decode": true,
+        "local_file": "/images/demo.gif",
+        "looping": true
+    },
+    "sourceType": "ffmpeg_source"
+}
+INFO:obswebsocket.core:Disconnecting...
 ```
 
 ## Problems?
