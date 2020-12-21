@@ -46,6 +46,7 @@ class obsws:
         self.ws = None
         self.eventmanager = EventManager()
         self.answers = {}
+        self.cond = threading.Condition()
 
         self.host = host
         self.port = port
@@ -181,9 +182,11 @@ class obsws:
     def _wait_message(self, message_id):
         timeout = time.time() + 60  # Timeout = 60s
         while time.time() < timeout:
-            if message_id in self.answers:
-                return self.answers.pop(message_id)
-            time.sleep(0.1)
+            with self.cond:
+                if message_id in self.answers:
+                    return self.answers.pop(message_id)
+                left = max(0, timeout - time.time())
+                self.cond.wait(left)
         raise exceptions.MessageTimeout(u"No answer for message {}".format(
             message_id))
 
@@ -237,7 +240,9 @@ class RecvThread(threading.Thread):
                 elif 'message-id' in result:
                     LOG.debug(u"Got answer for id {}: {}".format(
                         result['message-id'], result))
-                    self.core.answers[result['message-id']] = result
+                    with self.core.cond:
+                        self.core.answers[result['message-id']] = result
+                        self.core.cond.notify_all()
                 else:
                     LOG.warning(u"Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
