@@ -183,7 +183,7 @@ class obsws:
         while time.time() < timeout:
             if message_id in self.answers:
                 return self.answers.pop(message_id)
-            time.sleep(0.1)
+            time.sleep(0.01)
         raise exceptions.MessageTimeout(u"No answer for message {}".format(
             message_id))
 
