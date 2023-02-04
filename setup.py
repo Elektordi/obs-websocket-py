@@ -2,18 +2,17 @@
 
 from distutils.core import setup
 from setuptools.command.sdist import sdist
-
-version = "1.0beta1"
+from obswebsocket import VERSION
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"
 try:
     description = open('README.md', 'rt').read()
     import pypandoc
-    description = pypandoc.convert_text(description, 'rst', 'markdown_github')
+    description = pypandoc.convert_text(description, 'rst', 'gfm')
 except ImportError:
-    pass
-# If not possible, leave it in Markdown...
+    # If not possible, leave it in Markdown...
+    print("Cannot find pypandoc, not generating README!")
 
 requirements = open('requirements.txt', 'rt').readlines()
 requirements = [x.strip() for x in requirements if x]
@@ -35,7 +34,7 @@ setup(
     packages=['obswebsocket'],
     # cmdclass={'sdist': UpdateClasses},
     license='MIT',
-    version=version,
+    version=VERSION,
     description='Python library to communicate with an obs-websocket server.',
     long_description=description,
     author='Guillaume "Elektordi" Genty',
