@@ -22,7 +22,7 @@ try:
     for s in scenes.getScenes():
         name = s['name']
         print("Switching to {}".format(name))
-        ws.call(requests.SetCurrentScene(name))
+        ws.call(requests.SetCurrentScene(**{'scene-name': name}))
         time.sleep(2)
 
     print("End of list")

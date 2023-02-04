@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from distutils.core import setup
-from setuptools.command.sdist import sdist
 from obswebsocket import VERSION
 
 # Convert README from Markdown to reStructuredText
@@ -17,22 +16,9 @@ except ImportError:
 requirements = open('requirements.txt', 'rt').readlines()
 requirements = [x.strip() for x in requirements if x]
 
-
-# Generate classes
-class UpdateClasses(sdist):
-    def run(self):
-        from os.path import dirname
-        from sys import path
-        path.append(dirname(__file__))
-        from generate_classes import generate_classes
-        generate_classes()
-        sdist.run(self)
-
-
 setup(
     name='obs-websocket-py',
     packages=['obswebsocket'],
-    # cmdclass={'sdist': UpdateClasses},
     license='MIT',
     version=VERSION,
     description='Python library to communicate with an obs-websocket server.',
