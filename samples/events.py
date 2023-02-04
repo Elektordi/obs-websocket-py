@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 import sys
 import time
@@ -16,11 +15,11 @@ password = "secret"
 
 
 def on_event(message):
-    print(u"Got message: {}".format(message))
+    print("Got message: {}".format(message))
 
 
 def on_switch(message):
-    print(u"You changed the scene to {}".format(message.getSceneName()))
+    print("You changed the scene to {}".format(message.getSceneName()))
 
 
 ws = obsws(host, port, password)

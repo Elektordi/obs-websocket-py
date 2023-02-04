@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 import sys
 import time
@@ -22,7 +21,7 @@ try:
     scenes = ws.call(requests.GetSceneList())
     for s in scenes.getScenes():
         name = s['name']
-        print(u"Switching to {}".format(name))
+        print("Switching to {}".format(name))
         ws.call(requests.SetCurrentScene(name))
         time.sleep(2)
 

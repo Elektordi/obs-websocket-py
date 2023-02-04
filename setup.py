@@ -1,11 +1,9 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-from __future__ import print_function
+#!/usr/bin/env python3
 
 from distutils.core import setup
 from setuptools.command.sdist import sdist
 
-version = "0.5.3"
+version = "1.0beta1"
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"
@@ -52,10 +50,12 @@ setup(
 
         'Development Status :: 4 - Beta',
 
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     install_requires=requirements,
 )
