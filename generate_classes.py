@@ -6,7 +6,7 @@ import json
 from six.moves.urllib.request import urlopen
 from collections import OrderedDict
 
-import_url = "https://raw.githubusercontent.com/Palakis/obs-websocket/4.x-current/docs/generated/comments.json"  # noqa: E501
+import_url = "https://raw.githubusercontent.com/obsproject/obs-websocket/4.x-compat/docs/generated/comments.json"  # noqa: E501
 
 
 def clean_var(string):
