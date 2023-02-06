@@ -53,11 +53,9 @@ class Baserequests:
         if self.status is None:
             return u"<{} request ({}) waiting>".format(self.name, self.dataout)
         elif self.status:
-            return u"<{} request ({}) called: success ({})>".format(
-                self.name, self.dataout, self.datain)
+            return u"<{} request ({}) called: success ({})>".format(self.name, self.dataout, self.datain)
         else:
-            return u"<{} request ({}) called: failed ({})>".format(
-                self.name, self.dataout, self.datain)
+            return u"<{} request ({}) called: failed ({})>".format(self.name, self.dataout, self.datain)
 
     def __getattr__(self, item):
         if item.startswith("get"):

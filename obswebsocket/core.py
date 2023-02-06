@@ -35,21 +35,12 @@ class obsws:
 
         :param host: Hostname to connect to
         :param port: TCP Port to connect to (Default is 4444)
-        :param password: Password for the websocket server (Leave this field
-            empty if no auth enabled on the server)
+        :param password: Password for the websocket server (Leave this field empty if auth is not enabled)
         :param timeout: How much seconds to wait for an answer after sending a request.
         :param authreconnect: Try to reconnect if websocket is closed, value is number of seconds between attemps.
         :param on_connect: function to call after successful connect, with parameter (obsws)
         :param on_disconnect: function to call after successful disconnect, with parameter (obsws)
         """
-        self.id = 1
-        self.thread_recv = None
-        self.thread_reco = None
-        self.ws = None
-        self.eventmanager = EventManager()
-        self.events = {}
-        self.answers = {}
-
         self.host = host
         self.port = port
         self.password = password
@@ -57,6 +48,14 @@ class obsws:
         self.authreconnect = authreconnect
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
+
+        self.id = 1
+        self.thread_recv = None
+        self.thread_reco = None
+        self.ws = None
+        self.eventmanager = EventManager()
+        self.events = {}
+        self.answers = {}
 
     def connect(self):
         """
@@ -164,8 +163,7 @@ class obsws:
         :return: Request object populated with response data.
         """
         if not isinstance(obj, base_classes.Baserequests):
-            raise exceptions.ObjectError(
-                "Call parameter is not a request object")
+            raise exceptions.ObjectError("Call parameter is not a request object")
         payload = obj.data()
         r = self.send(payload)
         obj.input(r)
