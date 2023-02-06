@@ -5,6 +5,7 @@ import logging
 import socket
 import threading
 import websocket
+import time
 
 from . import exceptions
 from . import base_classes
@@ -28,7 +29,7 @@ class obsws:
     For advanced usage, including events callback, see the 'samples' directory.
     """
 
-    def __init__(self, host='localhost', port=4444, password='', timeout=60):
+    def __init__(self, host='localhost', port=4444, password='', timeout=60, authreconnect=0, on_connect=None, on_disconnect=None):
         """
         Construct a new obsws wrapper
 
@@ -36,39 +37,58 @@ class obsws:
         :param port: TCP Port to connect to (Default is 4444)
         :param password: Password for the websocket server (Leave this field
             empty if no auth enabled on the server)
+        :param timeout: How much seconds to wait for an answer after sending a request.
+        :param authreconnect: Try to reconnect if websocket is closed, value is number of seconds between attemps.
+        :param on_connect: function to call after successful connect, with parameter (obsws)
+        :param on_disconnect: function to call after successful disconnect, with parameter (obsws)
         """
         self.id = 1
         self.thread_recv = None
+        self.thread_reco = None
         self.ws = None
         self.eventmanager = EventManager()
         self.events = {}
         self.answers = {}
-        self.timeout = timeout
 
         self.host = host
         self.port = port
         self.password = password
+        self.timeout = timeout
+        self.authreconnect = authreconnect
+        self.on_connect = on_connect
+        self.on_disconnect = on_disconnect
 
-    def connect(self, host=None, port=None):
+    def connect(self):
         """
         Connect to the websocket server
 
         :return: Nothing
         """
-        if host is not None:
-            self.host = host
-        if port is not None:
-            self.port = port
-
         try:
             self.ws = websocket.WebSocket()
             LOG.info("Connecting...")
             self.ws.connect("ws://{}:{}".format(self.host, self.port))
             LOG.info("Connected!")
             self._auth(self.password)
-            self._run_threads()
+
+            if self.thread_recv is not None:
+                self.thread_recv.running = False
+            self.thread_recv = RecvThread(self)
+            self.thread_recv.daemon = True
+            self.thread_recv.start()
+            if self.on_connect:
+                self.on_connect(self)
         except socket.error as e:
-            raise exceptions.ConnectionFailure(str(e))
+            if self.authreconnect:
+                if not self.thread_reco:
+                    LOG.warning("Connection failed, reconnecting in %s second(s)." % (self.authreconnect))
+                    self.thread_reco = ReconnectThread(self)
+                    self.thread_reco.daemon = True
+                    self.thread_reco.start()
+                else:
+                    LOG.warning("Connection failed, but reconnect timer already running.")
+            else:
+                raise exceptions.ConnectionFailure(str(e))
 
     def reconnect(self):
         """
@@ -76,11 +96,7 @@ class obsws:
 
         :return: Nothing
         """
-        try:
-            self.disconnect()
-        except Exception:
-            # TODO: Need to catch more precise exception
-            pass
+        self.disconnect()
         self.connect()
 
     def disconnect(self):
@@ -89,18 +105,19 @@ class obsws:
 
         :return: Nothing
         """
-        LOG.info("Disconnecting...")
-        if self.thread_recv is not None:
+        if self.thread_recv and self.thread_recv.running:
+            if self.on_disconnect:
+                self.on_disconnect(self)
             self.thread_recv.running = False
-
+        if not self.ws.connected:
+            return
+        LOG.info("Disconnecting...")
         try:
             self.ws.close()
         except socket.error:
             pass
-
-        if self.thread_recv is not None:
-            self.thread_recv.join()
-            self.thread_recv = None
+        self.thread_recv.join()
+        self.thread_recv = None
 
     def _auth(self, password):
         auth_payload = {
@@ -137,13 +154,6 @@ class obsws:
             if result['status'] != 'ok':
                 raise exceptions.ConnectionFailure(result['error'])
         pass
-
-    def _run_threads(self):
-        if self.thread_recv is not None:
-            self.thread_recv.running = False
-        self.thread_recv = RecvThread(self)
-        self.thread_recv.daemon = True
-        self.thread_recv.start()
 
     def call(self, obj):
         """
@@ -241,7 +251,13 @@ class RecvThread(threading.Thread):
                     LOG.warning(u"Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
-                    self.core.reconnect()
+                    if self.core.authreconnect:
+                        LOG.warning("Connection lost, attempting to reconnect...")
+                        self.core.reconnect()
+                    else:
+                        LOG.warning("Connection lost!")
+                        self.core.disconnect()
+                    break
             except OSError as e:
                 if self.running:
                     raise e
@@ -259,6 +275,18 @@ class RecvThread(threading.Thread):
             raise exceptions.ObjectError(u"Invalid event {}".format(name))
         obj.input(data)
         return obj
+
+
+class ReconnectThread(threading.Thread):
+
+    def __init__(self, core):
+        self.core = core
+        threading.Thread.__init__(self)
+
+    def run(self):
+        time.sleep(self.core.authreconnect)
+        self.core.thread_reco = None
+        self.core.reconnect()
 
 
 class EventManager:
