@@ -4,7 +4,6 @@ import json
 import logging
 import socket
 import threading
-import time
 import websocket
 
 from . import exceptions
@@ -29,7 +28,7 @@ class obsws:
     For advanced usage, including events callback, see the 'samples' directory.
     """
 
-    def __init__(self, host='localhost', port=4444, password=''):
+    def __init__(self, host='localhost', port=4444, password='', timeout=60):
         """
         Construct a new obsws wrapper
 
@@ -42,7 +41,9 @@ class obsws:
         self.thread_recv = None
         self.ws = None
         self.eventmanager = EventManager()
+        self.events = {}
         self.answers = {}
+        self.timeout = timeout
 
         self.host = host
         self.port = port
@@ -171,18 +172,18 @@ class obsws:
         message_id = str(self.id)
         self.id += 1
         data["message-id"] = message_id
+        event = threading.Event()
+        self.events[message_id] = event
+
         LOG.debug(u"Sending message id {}: {}".format(message_id, data))
         self.ws.send(json.dumps(data))
-        return self._wait_message(message_id)
 
-    def _wait_message(self, message_id):
-        timeout = time.time() + 60  # Timeout = 60s
-        while time.time() < timeout:
-            if message_id in self.answers:
-                return self.answers.pop(message_id)
-            time.sleep(0.1)
-        raise exceptions.MessageTimeout(u"No answer for message {}".format(
-            message_id))
+        event.wait(self.timeout)
+        self.events.pop(message_id)
+
+        if message_id in self.answers:
+            return self.answers.pop(message_id)
+        raise exceptions.MessageTimeout(u"No answer for message {}".format(message_id))
 
     def register(self, func, event=None):
         """
@@ -232,9 +233,10 @@ class RecvThread(threading.Thread):
                     obj = self.build_event(result)
                     self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
-                    LOG.debug(u"Got answer for id {}: {}".format(
-                        result['message-id'], result))
-                    self.core.answers[result['message-id']] = result
+                    LOG.debug(u"Got answer for id {}: {}".format(result['message-id'], result))
+                    if result['message-id'] in self.core.events:
+                        self.core.answers[result['message-id']] = result
+                        self.core.events[result['message-id']].set()
                 else:
                     LOG.warning(u"Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
