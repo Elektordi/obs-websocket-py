@@ -10,7 +10,7 @@ sys.path.append('../')
 from obswebsocket import obsws  # noqa: E402
 
 host = "localhost"
-port = 4444
+port = 4455
 password = "secret"
 
 

@@ -10,7 +10,7 @@ sys.path.append('../')
 from obswebsocket import obsws, events  # noqa: E402
 
 host = "localhost"
-port = 4444
+port = 4455
 password = "secret"
 
 
@@ -25,6 +25,7 @@ def on_switch(message):
 ws = obsws(host, port, password)
 ws.register(on_event)
 ws.register(on_switch, events.SwitchScenes)
+ws.register(on_switch, events.CurrentProgramSceneChanged)
 ws.connect()
 
 try:

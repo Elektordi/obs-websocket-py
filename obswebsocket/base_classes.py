@@ -11,7 +11,6 @@ class Baseevents:
 
     def input(self, data):
         r = copy.copy(data)
-        del r['update-type']
         self.datain = r
 
     def __repr__(self):
@@ -39,15 +38,12 @@ class Baserequests:
 
     def data(self):
         payload = copy.copy(self.dataout)
-        payload.update({'request-type': self.name})
         return payload
 
-    def input(self, data):
+    def input(self, data, status):
         r = copy.copy(data)
-        del r['message-id']
-        self.status = (r['status'] == 'ok')
-        del r['status']
         self.datain = r
+        self.status = status
 
     def __repr__(self):
         if self.status is None:
