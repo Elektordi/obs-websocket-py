@@ -4,7 +4,7 @@ import sys
 import time
 
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 sys.path.append('../')
 from obswebsocket import obsws  # noqa: E402

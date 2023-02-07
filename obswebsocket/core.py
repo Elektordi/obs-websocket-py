@@ -123,12 +123,14 @@ class obsws:
             "request-type": "GetAuthRequired",
             "message-id": str(self.id),
         }
+        LOG.debug("Sending initial message: {}".format(auth_payload))
         self.id += 1
         self.ws.send(json.dumps(auth_payload))
         result = json.loads(self.ws.recv())
+        LOG.debug("Got initial response: {}".format(result))
 
-        if result['status'] != 'ok':
-            raise exceptions.ConnectionFailure(result['error'])
+        if result.get('status') != 'ok':
+            raise exceptions.ConnectionFailure(result.get('error', "Invalid initial response."))
 
         if result.get('authRequired'):
             secret = base64.b64encode(
@@ -147,11 +149,13 @@ class obsws:
                 "message-id": str(self.id),
                 "auth": auth,
             }
+            LOG.debug("Sending auth message: {}".format(auth_payload))
             self.id += 1
             self.ws.send(json.dumps(auth_payload))
             result = json.loads(self.ws.recv())
-            if result['status'] != 'ok':
-                raise exceptions.ConnectionFailure(result['error'])
+            LOG.debug("Got auth response: {}".format(result))
+            if result.get('status') != 'ok':
+                raise exceptions.ConnectionFailure(result.get('error', "Invalid auth response."))
         pass
 
     def call(self, obj):
@@ -183,7 +187,7 @@ class obsws:
         event = threading.Event()
         self.events[message_id] = event
 
-        LOG.debug(u"Sending message id {}: {}".format(message_id, data))
+        LOG.debug("Sending message id {}: {}".format(message_id, data))
         self.ws.send(json.dumps(data))
 
         event.wait(self.timeout)
@@ -191,7 +195,7 @@ class obsws:
 
         if message_id in self.answers:
             return self.answers.pop(message_id)
-        raise exceptions.MessageTimeout(u"No answer for message {}".format(message_id))
+        raise exceptions.MessageTimeout("No answer for message {}".format(message_id))
 
     def register(self, func, event=None):
         """
@@ -237,16 +241,16 @@ class RecvThread(threading.Thread):
 
                 result = json.loads(message)
                 if 'update-type' in result:
-                    LOG.debug(u"Got message: {}".format(result))
+                    LOG.debug("Got message: {}".format(result))
                     obj = self.build_event(result)
                     self.core.eventmanager.trigger(obj)
                 elif 'message-id' in result:
-                    LOG.debug(u"Got answer for id {}: {}".format(result['message-id'], result))
+                    LOG.debug("Got answer for id {}: {}".format(result['message-id'], result))
                     if result['message-id'] in self.core.events:
                         self.core.answers[result['message-id']] = result
                         self.core.events[result['message-id']].set()
                 else:
-                    LOG.warning(u"Unknown message: {}".format(result))
+                    LOG.warning("Unknown message: {}".format(result))
             except websocket.WebSocketConnectionClosedException:
                 if self.running:
                     if self.core.authreconnect:
@@ -260,7 +264,7 @@ class RecvThread(threading.Thread):
                 if self.running:
                     raise e
             except (ValueError, exceptions.ObjectError) as e:
-                LOG.warning(u"Invalid message: {} ({})".format(message, e))
+                LOG.warning("Invalid message: {} ({})".format(message, e))
         # end while
         LOG.debug("RecvThread ended.")
 
@@ -270,7 +274,7 @@ class RecvThread(threading.Thread):
         try:
             obj = getattr(events, name)()
         except AttributeError:
-            raise exceptions.ObjectError(u"Invalid event {}".format(name))
+            raise exceptions.ObjectError("Invalid event {}".format(name))
         obj.input(data)
         return obj
 
