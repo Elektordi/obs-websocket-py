@@ -18,12 +18,20 @@ class obsws:
     """
     Core class for using obs-websocket-py
 
-    Simple usage:
-        >>> import obswebsocket, obswebsocket.requests as obsrequests
-        >>> client = obswebsocket.obsws("localhost", 4444, "secret")
+    Simple usage: (v5 api)
+        >>> from obswebsocket import obsws, requests
+        >>> client = obsws("localhost", 4455, "secret")
         >>> client.connect()
-        >>> client.call(obsrequests.GetVersion()).getObsWebsocketVersion()
-        u'4.1.0'
+        >>> client.call(requests.GetVersion()).getObsVersion()
+        '29.0.0'
+        >>> client.disconnect()
+
+    Legacy usage: (v4 api)
+        >>> from obswebsocket import obsws, requests
+        >>> client = obsws("localhost", 4444, "secret", legacy=True)
+        >>> client.connect()
+        >>> client.call(requests.GetVersion()).getObsStudioVersion()
+        '25.0.0'
         >>> client.disconnect()
 
     For advanced usage, including events callback, see the 'samples' directory.
@@ -39,8 +47,8 @@ class obsws:
         :param legacy: Server is using old obs-websocket protocol (v4). Default is v5 (False) except if port is 4444.
         :param timeout: How much seconds to wait for an answer after sending a request.
         :param authreconnect: Try to reconnect if websocket is closed, value is number of seconds between attemps.
-        :param on_connect: function to call after successful connect, with parameter (obsws)
-        :param on_disconnect: function to call after successful disconnect, with parameter (obsws)
+        :param on_connect: Function to call after successful connect, with parameter (obsws)
+        :param on_disconnect: Function to call after successful disconnect, with parameter (obsws)
         """
         self.host = host
         self.port = port
