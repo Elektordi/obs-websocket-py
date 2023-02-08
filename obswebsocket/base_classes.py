@@ -19,9 +19,11 @@ class Baseevents:
     def __getattr__(self, item):
         if item.startswith("get"):
             def getter():
-                key = item[3:4].lower() + item[4:]
+                key1 = key = item[3:4].lower() + item[4:]
                 if key not in self.datain:
                     key = camelcase_to_kebabcase.sub('-', key).lower()
+                if key not in self.datain:
+                    raise KeyError(key1)
                 return self.datain[key]
             return getter
         raise AttributeError("'{}' object has no attribute '{}'".format(self.name, item))
@@ -56,9 +58,11 @@ class Baserequests:
     def __getattr__(self, item):
         if item.startswith("get"):
             def getter():
-                key = item[3:4].lower() + item[4:]
+                key1 = key = item[3:4].lower() + item[4:]
                 if key not in self.datain:
                     key = camelcase_to_kebabcase.sub('-', key).lower()
+                if key not in self.datain:
+                    raise KeyError(key1)
                 return self.datain[key]
             return getter
         raise AttributeError("'{}' object has no attribute '{}'".format(self.name, item))
