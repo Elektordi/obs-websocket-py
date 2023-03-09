@@ -1,5 +1,6 @@
 import copy
 import re
+import warnings
 
 camelcase_to_kebabcase = re.compile(r'(?<!^)(?=[A-Z])')
 
@@ -30,7 +31,9 @@ class Baseevents:
 
 
 class Baserequests:
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
+        if args:
+            warnings.warn("All obs-websocket-py requests now require keyword arguments (since version 1.0), check documentation!", UserWarning, stacklevel=2)
         self.name = type(self).__dict__.get('name') or "?"
         self.datain = {}
         self.dataout = {}
