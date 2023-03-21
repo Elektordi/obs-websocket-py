@@ -287,6 +287,23 @@ class obsws:
         self.eventmanager.unregister(func, event)
 
 
+    def __enter__(self):
+        """
+        Entry for a with statement
+
+        :return: This object
+        """
+        self.connect()
+        return self
+
+    def __exit__(self):
+        """
+        Exit for a with statement
+
+        :return: Nothing
+        """
+        self.disconnect()
+
 class RecvThread(threading.Thread):
 
     def __init__(self, core):
