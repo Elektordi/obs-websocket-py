@@ -71,7 +71,13 @@ class obsws:
         self.answers = {}
         self.server_version = None
 
-    def connect(self):
+    def connect(
+        self,
+        input_volume_meters=False,
+        input_active_state_changed=False,
+        input_show_state_changed=False,
+        scene_item_transform_changed=False
+    ):
         """
         Connect to the websocket server
 
@@ -86,7 +92,12 @@ class obsws:
             if self.legacy:
                 self._auth_legacy()
             else:
-                self._auth()
+                self._auth(
+                    input_volume_meters=input_volume_meters,
+                    input_active_state_changed=input_active_state_changed,
+                    input_show_state_changed=input_show_state_changed,
+                    scene_item_transform_changed=scene_item_transform_changed
+                )
 
             if self.thread_recv is not None:
                 self.thread_recv.running = False
@@ -136,7 +147,13 @@ class obsws:
         self.thread_recv.join()
         self.thread_recv = None
 
-    def _auth(self):
+    def _auth(
+        self,
+        input_volume_meters=False,
+        input_active_state_changed=False,
+        input_show_state_changed=False,
+        scene_item_transform_changed=False
+    ):
         message = self.ws.recv()
         LOG.debug("Got Hello message: {}".format(message))
         result = json.loads(message)
@@ -150,12 +167,22 @@ class obsws:
         else:
             auth = ''
 
+        eventSubscriptions = 1023 # EventSubscription::All
+        if input_volume_meters:
+            eventSubscriptions = eventSubscriptions << 16
+        if input_active_state_changed:
+            eventSubscriptions = eventSubscriptions << 17
+        if input_show_state_changed:
+            eventSubscriptions = eventSubscriptions << 18
+        if scene_item_transform_changed:
+            eventSubscriptions = eventSubscriptions << 19
+
         payload = {
             "op": 1,
             "d": {
                 "rpcVersion": 1,
                 "authentication": auth,
-                "eventSubscriptions": 1023  # EventSubscription::All
+                "eventSubscriptions": eventSubscriptions
             }
         }
         LOG.debug("Sending Identify message: {}".format(json.dumps(payload)))
@@ -163,7 +190,7 @@ class obsws:
 
         message = self.ws.recv()
         if not message:
-            raise exceptions.ConnectionFailure("Empty response to Identify, password may be inconnect.")
+            raise exceptions.ConnectionFailure("Empty response to Identify, password may be incorrect.")
         LOG.debug("Got Identified message: {}".format(message))
         result = json.loads(message)
         if result.get('op') != 2:
