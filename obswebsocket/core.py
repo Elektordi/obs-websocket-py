@@ -163,7 +163,7 @@ class obsws:
 
         message = self.ws.recv()
         if not message:
-            raise exceptions.ConnectionFailure("Empty response to Identify, password may be inconnect.")
+            raise exceptions.ConnectionFailure("Empty response to Identify, password may be incorrect.")
         LOG.debug("Got Identified message: {}".format(message))
         result = json.loads(message)
         if result.get('op') != 2:
