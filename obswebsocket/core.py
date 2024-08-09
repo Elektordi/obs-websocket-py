@@ -259,7 +259,12 @@ class obsws:
             if self.legacy:
                 obj.input(r, r['status'] == 'ok')
             else:
-                obj.input(r.get('responseData', {}), r['requestStatus']['result'])
+                # Include error reporting to client.
+                result = r['requestStatus']['result']
+                if result:               
+                    obj.input(r.get('responseData', {}), result)
+                else:
+                    obj.input(r['requestStatus'], result)
             return obj
         raise exceptions.MessageTimeout("No answer for message {}".format(message_id))
 
