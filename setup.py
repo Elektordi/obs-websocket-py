@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
-
+import os, re
 from distutils.core import setup
-from obswebsocket import VERSION
+
+def read_version():
+    version_file = os.path.join(os.path.dirname(__file__), "obswebsocket", "__init__.py")
+    with open(version_file, "r") as f:
+        content = f.read()
+    match = re.search(r'^VERSION\s*=\s*["\']([^"\']+)["\']', content, re.MULTILINE)
+    if match:
+        return match.group(1)
+
+VERSION=read_version()
 
 # Convert README from Markdown to reStructuredText
 description = "Please take a look at README.md"

@@ -11,4 +11,4 @@ from .core import obsws  # noqa: E402
 
 __all__ = ["obsws", "events", "requests"]
 
-VERSION = "1.0"
+VERSION = "1.1beta1"

@@ -81,7 +81,7 @@ class obsws:
             self.ws = websocket.WebSocket()
             url = "ws://{}:{}".format(self.host, self.port)
             LOG.info("Connecting to %s..." % (url))
-            self.ws.connect(url)
+            self.ws.connect(url, timeout=self.timeout)
             LOG.info("Connected!")
             if self.legacy:
                 self._auth_legacy()
